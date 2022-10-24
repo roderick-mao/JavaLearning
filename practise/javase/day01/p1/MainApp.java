@@ -1,4 +1,4 @@
-package practise.javase.day01.p1;
+package javase.day02.day01.p1;
 
 import java.time.LocalDate;
 
