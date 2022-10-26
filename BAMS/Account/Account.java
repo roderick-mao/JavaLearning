@@ -14,7 +14,7 @@ public class Account {
     /*private static Account account;*/
 
     Account(){
-        id = 00001L;
+        id = 10000L;
         password = "123456";
         name = "default";
         personId = "000001";
@@ -22,7 +22,7 @@ public class Account {
         balance = 0;
     }
 
-    Account(long id,String password,String name,String personId,String email){
+    public Account(long id,String password,String name,String personId,String email){
         this.id = id;
         this.password = password;
         this.name = name;
@@ -35,10 +35,10 @@ public class Account {
         return account;
     }
 
-    public Account register(long id,String password,String name,String personId,String email){
+/*    public Account register(long id,String password,String name,String personId,String email){
         Account account = new Account(id,password,name,personId,email);
         return account;
-    }
+    }*/
 
     private Account deposit(double amount){
         balance += amount;
