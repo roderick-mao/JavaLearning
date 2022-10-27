@@ -2,10 +2,13 @@ package javase.day06;
 
 import com.sun.deploy.util.SyncAccess;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -56,16 +59,116 @@ class AfterClass {
         ld =  ld.withDayOfMonth(ld.lengthOfMonth()-2);
         return ld;
     }
+
+    public static News[] sortNews(){
+        //initiate a news array
+        News[] news = new News[10];
+        for (int i = 0 ;i<10;i++){
+            news[i] = new News("title"+i,"content"+i,LocalDateTime.of
+                    (2022,(int)(Math.random()*12+1),(int)(Math.random()*30+1),(int)(Math.random()*23+1),
+                            (int)(Math.random()*59+1),(int)(Math.random()*59+1)));
+        }
+        //排序
+        for (int i = 0;i<10;i++){
+            for (int j = (i+1);j<10;j++){
+                if (news[i].getTime().isBefore(news[j].getTime())){
+                    News temp = news[i];
+                    news[i] = news[j];
+                    news[j] = temp;
+                }
+            }
+        }
+
+        return news;
+    }
+    public static Student[] earlierZhang(){
+        //initiate a news array
+        Student[] stus = new Student[10];
+        for (int i = 0 ;i<10;i++){
+            stus[i] = new Student("name"+i,i,LocalDate.of
+                    (1999,(int)(Math.random()*12+1),(int)(Math.random()*30+1)));
+        }
+        //排序
+        for (int i = 0;i<10;i++){
+            for (int j = (i+1);j<10;j++){
+                if (news[i].getTime().isBefore(news[j].getTime())){
+                    News temp = news[i];
+                    news[i] = news[j];
+                    news[j] = temp;
+                }
+            }
+        }
+
+        return news;
+    }
+
+
+
 }
+class News{
+
+    private String title;
+    private String content;
+    private LocalDateTime time;
+
+    public News(String title, String content, LocalDateTime time) {
+        this.title = title;
+        this.content = content;
+        this.time = time;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    @Override
+    public String toString() {
+        return "title:"+title+"  content:"+content+"   time:"+time.toString();
+    }
+}
+
+class Student{
+    private String name;
+    private int num;
+    private LocalDate birthday;
+
+    public Student(String name, int num, LocalDate birthday) {
+        this.name = name;
+        this.num = num;
+        this.birthday = birthday;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+}
+
 
 class AfterClassDemo{
     public static void main(String[] args) throws ParseException {
-        System.out.println("从出生到现在"+AfterClass.daysBetwBirth()+"天");
+        /*System.out.println("从出生到现在"+AfterClass.daysBetwBirth()+"天");
         System.out.println("三天后的日期为："+AfterClass.after3day());
         System.out.println("过期日期为："+AfterClass.overDue().get(Calendar.YEAR)+
         "年"+(AfterClass.overDue().get(Calendar.MONTH)+1)+"月"+AfterClass.overDue().get(Calendar.DATE)+"日");
         System.out.println("上个月的第三天是星期几："+AfterClass.lastMonth());
-        System.out.println("下个月倒数第三天："+AfterClass.nextMonth());
+        System.out.println("下个月倒数第三天："+AfterClass.nextMonth());*/
+        System.out.println(Arrays.toString(AfterClass.sortNews()));
     }
 
 }
