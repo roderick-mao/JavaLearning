@@ -82,24 +82,24 @@ class AfterClass {
         return news;
     }
     public static Student[] earlierZhang(){
+        Student zhang = new Student("张三",1000,LocalDate.of(1999,6,1));
         //initiate a news array
         Student[] stus = new Student[10];
         for (int i = 0 ;i<10;i++){
             stus[i] = new Student("name"+i,i,LocalDate.of
                     (1999,(int)(Math.random()*12+1),(int)(Math.random()*30+1)));
         }
+        Student[] bigger = new Student[10];
+        int index = 0;
         //排序
         for (int i = 0;i<10;i++){
-            for (int j = (i+1);j<10;j++){
-                if (news[i].getTime().isBefore(news[j].getTime())){
-                    News temp = news[i];
-                    news[i] = news[j];
-                    news[j] = temp;
-                }
+            if (stus[i].getBirthday().isBefore(zhang.getBirthday())){
+                bigger[index++] = stus[i];
             }
+
         }
 
-        return news;
+        return bigger;
     }
 
 
@@ -157,18 +157,24 @@ class Student{
     public LocalDate getBirthday() {
         return birthday;
     }
+
+    @Override
+    public String toString() {
+        return "name:"+name+"  num:"+num+"   time:"+birthday.toString();
+    }
 }
 
 
 class AfterClassDemo{
     public static void main(String[] args) throws ParseException {
-        /*System.out.println("从出生到现在"+AfterClass.daysBetwBirth()+"天");
+        System.out.println("从出生到现在"+AfterClass.daysBetwBirth()+"天");
         System.out.println("三天后的日期为："+AfterClass.after3day());
         System.out.println("过期日期为："+AfterClass.overDue().get(Calendar.YEAR)+
         "年"+(AfterClass.overDue().get(Calendar.MONTH)+1)+"月"+AfterClass.overDue().get(Calendar.DATE)+"日");
         System.out.println("上个月的第三天是星期几："+AfterClass.lastMonth());
-        System.out.println("下个月倒数第三天："+AfterClass.nextMonth());*/
+        System.out.println("下个月倒数第三天："+AfterClass.nextMonth());
         System.out.println(Arrays.toString(AfterClass.sortNews()));
+        System.out.println(Arrays.toString(AfterClass.earlierZhang()));
     }
 
 }
