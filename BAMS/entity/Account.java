@@ -1,6 +1,4 @@
-package Account;
-
-import sun.management.counter.AbstractCounter;
+package entity;
 
 public class Account {
 
@@ -40,12 +38,12 @@ public class Account {
         return account;
     }*/
 
-    private Account deposit(double amount){
+    public Account deposit(double amount){
         balance += amount;
         return this;
     }
 
-    private Account withdraw(double amount){
+    public Account withdraw(double amount){
         if (amount > balance){
             System.out.println("无法取出，得加钱！");
             return this;

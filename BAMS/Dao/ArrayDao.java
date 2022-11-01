@@ -1,8 +1,7 @@
 package Dao;
 
-import Account.Account;
+import entity.Account;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class ArrayDao {
@@ -20,7 +19,7 @@ public class ArrayDao {
         return arrayDao;
     }
 
-    public Account selectOne(Long id,String pwd){
+    public  Account selectOne(Long id,String pwd){
         for (int i = 0;i < index;i++){
             if (id == accts[i].getId() && accts[i].getPassword() == pwd){
                 return accts[i];

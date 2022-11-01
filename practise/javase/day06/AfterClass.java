@@ -1,6 +1,5 @@
 package javase.day06;
 
-import com.sun.deploy.util.SyncAccess;
 
 import java.lang.reflect.Array;
 import java.text.ParseException;

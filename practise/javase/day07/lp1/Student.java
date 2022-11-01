@@ -1,8 +1,5 @@
 package javase.day07.lp1;
 
-import com.sun.deploy.util.SyncAccess;
-
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Objects;
 
