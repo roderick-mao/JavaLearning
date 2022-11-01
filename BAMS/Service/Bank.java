@@ -1,10 +1,7 @@
 package Service;
 
 import Dao.ArrayDao;
-import entity.Account;
-import entity.CreditAccount;
-import entity.LoanAccount;
-import entity.LoanCreditAccount;
+import entity.*;
 
 public class Bank {
 
@@ -18,13 +15,13 @@ public class Bank {
         }
         switch (type){
             case 0:
-                Account acct0 = new Account(id,password,name,personID,email);
+                Account acct0 = new SavingAccount(id,password,name,personID,email);
                 return acct0;
             case 1:
                 Account acct1 = new CreditAccount(id,password,name,personID,email,5000);
                 return acct1;
             case 2:
-                LoanAccount acct2 = new LoanAccount();
+                LoanSavingAccount acct2 = new LoanSavingAccount();
                 return acct2;
             case 3:
                 LoanCreditAccount acct3 = new LoanCreditAccount();
@@ -34,20 +31,50 @@ public class Bank {
         }
     }
 
-    public Account Login(long id,String passwd){
+    public Account Login(Long id,String passwd){
         return ad.selectOne(id,passwd);
     }
 
-    public Account deposit (long id, double money){
+    public Account deposit (Long id, double money){
         return ad.selectOne(id).deposit(money);
     }
 
-    public Account withdraw(long id, double money){
-        return ad.selectOne(id).withdraw(money);
+    public Account withdraw(Long id, String passwd,double money){
+        return ad.selectOne(id,passwd).withdraw(money);
     }
 
-    public Account transfer(long from, String fromPasswd ,long to, double money){
-        return null;
-        //还没写完后面继续（标签）
+    public boolean transfer(Long from, String fromPasswd ,Long to, double money){
+        if (from!=null && fromPasswd!=null && !from.equals("") && !fromPasswd.equals("")){
+            Account fromAccount = ad.selectOne(from,fromPasswd);
+            Account toAccount = ad.selectOne(from);
+            if(fromAccount!=null){
+                if(toAccount!=null){
+                    try {
+                        fromAccount.withdraw(money);
+                    }catch (RuntimeException e){
+                        e.toString();
+                    }
+                    toAccount.deposit(money);
+                    return true;
+                }else {
+                    throw new RuntimeException("收款账号不存在");
+                }
+            }else {
+                throw new RuntimeException("汇款账号不存在");
+            }
+
+        }else {
+            throw new RuntimeException("账号信息不能为空");
+        }
+    }
+
+    public Account updateCeiling(Long id,String passwd,double money){
+        Account acct = ad.selectOne(id,passwd);
+        if (acct != null && acct instanceof CreditAccount){
+            ((CreditAccount) acct).setCeiling(money);
+            return acct;
+        }else {
+            throw new RuntimeException("该账号无法修改额度");
+        }
     }
 }

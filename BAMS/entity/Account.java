@@ -1,8 +1,8 @@
 package entity;
 
-public class Account {
+public abstract class Account {
 
-    private final long id;
+    private final Long id;
     private String password;
     private String name;
     private final String personId;
@@ -20,7 +20,7 @@ public class Account {
         balance = 0;
     }
 
-    public Account(long id,String password,String name,String personId,String email){
+    public Account(Long id,String password,String name,String personId,String email){
         this.id = id;
         this.password = password;
         this.name = name;
@@ -28,12 +28,12 @@ public class Account {
         this.email = email;
         this.balance = 0;
     }
-    public Account getEmptyAccount(){
+    /*public Account getEmptyAccount(){
         Account account = new Account();
         return account;
-    }
+    }*/
 
-/*    public Account register(long id,String password,String name,String personId,String email){
+/*    public Account register(Long id,String password,String name,String personId,String email){
         Account account = new Account(id,password,name,personId,email);
         return account;
     }*/
@@ -43,15 +43,7 @@ public class Account {
         return this;
     }
 
-    public Account withdraw(double amount){
-        if (amount > balance){
-            System.out.println("无法取出，得加钱！");
-            return this;
-        }else {
-            balance -= amount;
-            return this;
-        }
-    }
+    public abstract Account withdraw(double amount);
     public void setPassword(String password) {
         this.password = password;
     }
@@ -72,7 +64,7 @@ public class Account {
         return balance;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -88,5 +80,7 @@ public class Account {
         return personId;
     }
 
-
+    void setBalance(double balance) {
+        this.balance = balance;
+    }
 }

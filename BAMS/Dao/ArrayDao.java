@@ -50,7 +50,7 @@ public class ArrayDao {
         return accts;
     }
 
-    public void delete(long id){
+    public void delete(Long id){
         for (int i = 0;i < index;i++){
             if (id == accts[i].getId()){
                 for (int y = i;y < index-1;y++){
