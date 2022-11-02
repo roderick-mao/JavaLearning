@@ -1,11 +1,12 @@
 package Service;
 
 import Dao.ArrayDao;
+import Dao.IDAO;
 import entity.*;
 
 public class Bank {
 
-    ArrayDao ad =  ArrayDao.initArrayDao();
+    IDAO ad =  ArrayDao.initArrayDao();
 
     public Account register(Long id, String password, String repassword,
                             String name, String personID, String email, int type){
@@ -76,5 +77,25 @@ public class Bank {
         }else {
             throw new RuntimeException("该账号无法修改额度");
         }
+    }
+
+    public double sumAccount(){
+        double sum = 0;
+        for (Account account : (Account[]) ad.selectAll()) {
+            if(account instanceof SavingAccount || account instanceof LoanSavingAccount) {
+                sum += account.getBalance();
+            } else if (account instanceof CreditAccount ||account instanceof LoanCreditAccount) {
+                if (account.getBalance()<0){
+                    continue;
+                }else {
+                    sum +=account.getBalance();
+                }
+            }
+        }
+        return sum;
+    }
+
+    public double sumCredit(){
+        return 0;
     }
 }
