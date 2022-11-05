@@ -1,11 +1,34 @@
 package javase.day02.lp1;
 
+import java.util.Objects;
+
 public class Person {
     String name;
     int age;
     public Person(String name, int age){
         this.name = name;
         this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Person){
+            Person anotherPerson = (Person)obj;
+            if (this.name == anotherPerson.name && this.age == anotherPerson.age){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name,age);
+    }
+
+    @Override
+    public String toString() {
+        return "姓名："+this.name+"年龄："+this.age;
     }
 }
 
