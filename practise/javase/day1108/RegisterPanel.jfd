@@ -1,0 +1,103 @@
+JFDML JFormDesigner: "8.0.0.0.194" Java: "17.0.4.1" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "registerLabel"
+				"text": "注  册  界  面"
+				"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 4, false )
+				"background": new java.awt.Color( 102, 102, 102, 255 )
+				"horizontalAlignment": 0
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 125
+				"height": 25
+				"x": 130
+				"y": 25
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "nameLabel"
+				"text": "账号："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 50
+				"height": 25
+				"x": 95
+				"y": 75
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "passwdLabel"
+				"text": "密码："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 50
+				"height": 25
+				"x": 95
+				"y": 130
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "nameField"
+				"background": new java.awt.Color( 204, 204, 204, 255 )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 130
+				"height": 30
+				"x": 170
+				"y": 75
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "backBtn"
+				"text": "返回"
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "backBtnMouseClicked", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 78
+				"height": 30
+				"x": 225
+				"y": 220
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "registerBtn"
+				"text": "注册"
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "registerBtnMouseClicked", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 78
+				"height": 30
+				"x": 90
+				"y": 220
+			} )
+			add( new FormComponent( "javax.swing.JRadioButton" ) {
+				name: "maleBtn"
+				"text": "男"
+				"$buttonGroup": new FormReference( "buttonGroup1" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 100
+				"y": 180
+			} )
+			add( new FormComponent( "javax.swing.JRadioButton" ) {
+				name: "femaleBtn"
+				"text": "女"
+				"$buttonGroup": new FormReference( "buttonGroup1" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 215
+				"y": 180
+			} )
+			add( new FormComponent( "javax.swing.JPasswordField" ) {
+				name: "passwordField"
+				"background": new java.awt.Color( 204, 204, 204, 255 )
+				"foreground": new java.awt.Color( 0, 0, 0, 255 )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 170
+				"y": 125
+				"width": 135
+				"height": 35
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
+			name: "buttonGroup1"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 315 )
+		} )
+	}
+}
