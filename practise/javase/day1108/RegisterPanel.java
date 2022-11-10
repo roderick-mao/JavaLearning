@@ -52,7 +52,7 @@ public class RegisterPanel extends JPanel {
                 CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
                 cardLayout.show(this.getParent(),"loginPanel");
 
-
+                clearRegister();
             }
 
         }else {
@@ -65,7 +65,7 @@ public class RegisterPanel extends JPanel {
     public void clearRegister(){
         /*passwordField.setText("");
         nameField.setText("");
-        maleBtn.*/
+        maleBtn.setSelected(true);*/
         initComponents();
     }
 

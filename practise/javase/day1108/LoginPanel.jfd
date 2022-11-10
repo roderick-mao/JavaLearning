@@ -42,7 +42,7 @@ new FormModel {
 				"y": 95
 				"width": 130
 			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
+			add( new FormComponent( "javax.swing.JPasswordField" ) {
 				name: "passwdTextField"
 				"background": #Color0
 				"foreground": new java.awt.Color( 0, 0, 0, 255 )

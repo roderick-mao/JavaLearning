@@ -23,7 +23,7 @@ public class UserDao {
         if(name!=null && passwd!=null && name!="" && passwd!=""){
             for (User u:
                  list) {
-                if (u!=null && name == u.getName() && passwd == u.getPasswd()){
+                if (u!=null && name.equals(u.getName()) && passwd.equals(u.getPasswd())){
                     return u;
                 }
             }

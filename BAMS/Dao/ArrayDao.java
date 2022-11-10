@@ -12,7 +12,7 @@ public class ArrayDao implements IDAO{
         Account[] accts = new Account[10];
         index = 0;
     }
-    public static ArrayDao initArrayDao(){
+    public static ArrayDao getInstance(){
         if(arrayDao == null){
             arrayDao = new ArrayDao();
         }

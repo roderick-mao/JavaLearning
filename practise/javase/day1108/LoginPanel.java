@@ -24,18 +24,20 @@ public class LoginPanel extends JPanel {
     private void loginBtnMouseClicked(MouseEvent e) {
         // TODO add your code here
         String username = nameTextField.getText();
-        String userpasswd = passwdTextField.getText();
+        String userpasswd = String.valueOf(passwdTextField.getPassword());
         if (userpasswd!=null && username!=null &&
                 !username.equals("") && !userpasswd.equals("")){
             User user = userService.login(username, userpasswd);
-            my.user = user;
-            my.mainPanel.initMain();
-            JOptionPane.showMessageDialog(null,"登录成功！");
+            if (user!=null) {
+                my.user = user;
+                my.mainPanel.initMain();
+                JOptionPane.showMessageDialog(null, "登录成功！");
 
-            CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
-            cardLayout.show(this.getParent(),"mainPanel");
+                CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
+                cardLayout.show(this.getParent(), "mainPanel");
 
-            clearLogin();
+                clearLogin();
+            }
         }else {
             JOptionPane.showMessageDialog(null,"请输入账号密码！");
         }
@@ -64,7 +66,7 @@ public class LoginPanel extends JPanel {
         loginBtn = new JButton();
         registerBtn = new JButton();
         nameTextField = new JTextField();
-        passwdTextField = new JTextField();
+        passwdTextField = new JPasswordField();
         nameLabel = new JLabel();
         passwdLable = new JLabel();
 
@@ -145,7 +147,7 @@ public class LoginPanel extends JPanel {
     private JButton loginBtn;
     private JButton registerBtn;
     private JTextField nameTextField;
-    private JTextField passwdTextField;
+    private JPasswordField passwdTextField;
     private JLabel nameLabel;
     private JLabel passwdLable;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on

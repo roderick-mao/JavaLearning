@@ -6,7 +6,7 @@ import entity.*;
 
 public class Bank {
 
-    IDAO ad =  ArrayDao.initArrayDao();
+    IDAO ad =  ArrayDao.getInstance();
 
     public Account register(Long id, String password, String repassword,
                             String name, String personID, String email, int type){
@@ -80,7 +80,7 @@ public class Bank {
     }
 
     public double sumAccount(){
-        double sum = 0;
+        double sum = 0.0;
         for (Account account : (Account[]) ad.selectAll()) {
             if(account instanceof SavingAccount || account instanceof LoanSavingAccount) {
                 sum += account.getBalance();
@@ -96,6 +96,16 @@ public class Bank {
     }
 
     public double sumCredit(){
-        return 0;
+        double credits = 0.0;
+        for (Account account : (Account[]) ad.selectAll()) {
+            if (account instanceof CreditAccount ||account instanceof LoanCreditAccount) {
+                if (account.getBalance()<0){
+                    credits +=account.getBalance();
+                }else {
+                    continue;
+                }
+            }
+        }
+        return credits;
     }
 }
