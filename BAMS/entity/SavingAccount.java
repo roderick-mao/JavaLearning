@@ -1,5 +1,7 @@
 package entity;
 
+import BankException.BalanceNotEnoughException;
+
 public class SavingAccount extends Account{
 
     SavingAccount(){
@@ -10,11 +12,11 @@ public class SavingAccount extends Account{
         super(id,password,name,personId,email);
     }
     @Override
-    public Account withdraw(double amount) {
+    public Account withdraw(double amount) throws BalanceNotEnoughException {
         if(amount <= this.getBalance()){
             this.setBalance(this.getBalance()-amount);
         }else{
-            throw new RuntimeException("余额不足无法取出");
+            throw new BalanceNotEnoughException("余额不足无法取出");
         }
         return this;
     }

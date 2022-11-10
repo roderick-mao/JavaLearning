@@ -1,18 +1,33 @@
 package Service;
 
+import BankException.*;
 import Dao.ArrayDao;
 import Dao.IDAO;
 import entity.*;
 
 public class Bank {
 
-    IDAO ad =  ArrayDao.getInstance();
+    private IDAO<Account> ad;
+
+    private Bank bank;
+
+    private Bank(){
+        super();
+        ad = new ArrayDao();
+    }
+
+    public Bank getInstance(){
+        if (bank == null){
+            bank = new Bank();
+        }
+        return bank;
+    }
 
     public Account register(Long id, String password, String repassword,
-                            String name, String personID, String email, int type){
+                            String name, String personID, String email, int type) throws LoginException {
 
         if (password.compareTo(repassword) != 0 ){
-            throw new RuntimeException("两次密码输入有误");
+            throw new LoginException("两次密码输入有误");
         }
         switch (type){
             case 0:
@@ -28,63 +43,53 @@ public class Bank {
                 LoanCreditAccount acct3 = new LoanCreditAccount();
                 return acct3;
             default:
-                throw new RuntimeException("账号类型错误，创建失败");
+                throw new LoginException("账号类型错误，创建失败");
         }
     }
 
-    public Account Login(Long id,String passwd){
+    public Account Login(Long id,String passwd) throws LoginException {
         return ad.selectOne(id,passwd);
     }
 
-    public Account deposit (Long id, double money){
+    public Account deposit (Long id, double money) throws LoginException {
         return ad.selectOne(id).deposit(money);
     }
 
-    public Account withdraw(Long id, String passwd,double money){
+    public Account withdraw(Long id, String passwd,double money)
+            throws BalanceNotEnoughException, LoginException {
         return ad.selectOne(id,passwd).withdraw(money);
     }
 
-    public boolean transfer(Long from, String fromPasswd ,Long to, double money){
-        if (from!=null && fromPasswd!=null && !from.equals("") && !fromPasswd.equals("")){
+    public boolean transfer(Long from, String fromPasswd ,Long to, double money)
+            throws  BalanceNotEnoughException, TransferException, LoginException {
+        if (from != null && fromPasswd != null && !fromPasswd.equals("")){
             Account fromAccount = ad.selectOne(from,fromPasswd);
             Account toAccount = ad.selectOne(from);
-            if(fromAccount!=null){
-                if(toAccount!=null){
-                    try {
-                        fromAccount.withdraw(money);
-                    }catch (RuntimeException e){
-                        e.toString();
-                    }
-                    toAccount.deposit(money);
-                    return true;
-                }else {
-                    throw new RuntimeException("收款账号不存在");
-                }
-            }else {
-                throw new RuntimeException("汇款账号不存在");
-            }
-
+            fromAccount.withdraw(money);
+            toAccount.deposit(money);
+            return true;
         }else {
-            throw new RuntimeException("账号信息不能为空");
+            throw new LoginException("账号信息不能为空");
         }
     }
 
-    public Account updateCeiling(Long id,String passwd,double money){
+    public Account updateCeiling(Long id,String passwd,double money)
+            throws TypeException, LoginException {
         Account acct = ad.selectOne(id,passwd);
-        if (acct != null && acct instanceof CreditAccount){
+        if (acct instanceof CreditAccount){
             ((CreditAccount) acct).setCeiling(money);
             return acct;
         }else {
-            throw new RuntimeException("该账号无法修改额度");
+            throw new TypeException("该账号无法修改额度");
         }
     }
 
     public double sumAccount(){
         double sum = 0.0;
-        for (Account account : (Account[]) ad.selectAll()) {
-            if(account instanceof SavingAccount || account instanceof LoanSavingAccount) {
+        for (Account account : ad.selectAll()) {
+            if(account instanceof SavingAccount) {
                 sum += account.getBalance();
-            } else if (account instanceof CreditAccount ||account instanceof LoanCreditAccount) {
+            } else if (account instanceof CreditAccount) {
                 if (account.getBalance()<0){
                     continue;
                 }else {
@@ -97,8 +102,8 @@ public class Bank {
 
     public double sumCredit(){
         double credits = 0.0;
-        for (Account account : (Account[]) ad.selectAll()) {
-            if (account instanceof CreditAccount ||account instanceof LoanCreditAccount) {
+        for (Account account : ad.selectAll()) {
+            if (account instanceof CreditAccount) {
                 if (account.getBalance()<0){
                     credits +=account.getBalance();
                 }else {
@@ -108,4 +113,39 @@ public class Bank {
         }
         return credits;
     }
+
+    public Account requestLoan(Long id, double money) throws LoanException, LoginException, TypeException {
+        Account acct = null;
+            acct = ad.selectOne(id);
+            if (acct instanceof Loanable){
+                //后期用try
+                    return  ((Loanable) acct).requestLoan(money);
+            }else {
+                //throw
+                /*System.out.println("本账号无法办理贷款");
+                return null;*/
+                throw new TypeException("本账号无法办理贷款");
+        }
+    }
+
+    public Account payLoan(Long id ,double money) throws LoginException, BalanceNotEnoughException, LoanException, TypeException {
+        Account acct = null;
+        acct = ad.selectOne(id);
+        if (acct instanceof Loanable){
+            return  ((Loanable) acct).payLoan(money);
+        }else {
+            throw new TypeException("本账号无贷款功能，无法还款");
+        }
+    }
+
+    public double total(){
+        double sum=0;
+        for (Account acct : ad.selectAll()){
+            if (acct instanceof Loanable){
+                sum += ((Loanable) acct).getLoan();
+            }
+        }
+        return sum;
+    }
+
 }

@@ -1,8 +1,10 @@
 package entity;
 
 
+import BankException.BalanceNotEnoughException;
+
 public class CreditAccount extends Account {
-    double ceiling;
+    private double ceiling;
     CreditAccount(){
         super();
         this.ceiling = 0;
@@ -22,38 +24,42 @@ public class CreditAccount extends Account {
 
 
     @Override
-    public Account withdraw(double amount) {
-        if(amount <= this.getBalance()+this.ceiling){
-            this.setBalance(this.getBalance()-amount);
+    public Account withdraw(double amount) throws BalanceNotEnoughException {
+        if(amount <= super.getBalance()+this.ceiling){
+            this.setBalance(super.getBalance()-amount);
         }else{
-            throw new RuntimeException("余额不足无法取出");
+            throw new BalanceNotEnoughException("余额不足无法取出");
         }
         return this;
     }
 
     public boolean reBalance(){
-        if (this.getBalance() >= 0.0){
+        if (super.getBalance() >= 0.0){
             return true;
         }else {
             System.out.println("请尽快还款");
             return false;
         }
     }
-}
 
-/*public class CreditAccount extends Account {
-    private Account[] accs = new Account[3];
-
-    private int index = 0;
-
-    public CreditAccount(Long id, String password, String name, String personId, String email) {
-        super(id, password, name, personId, email);
+    @Override
+    public double getBalance() {
+        return super.getBalance()+ceiling;
     }
 
-    public boolean insert(Account acc){
-        if(index>accs.length){
-            accs = Arrays.copyOf(accs, accs.length*3/2+1);
+    public double getRest(){
+        if(super.getBalance()>0){
+            return super.getBalance();
+        }else {
+            return 0;
         }
-        return true;
     }
-}*/
+
+    public double getCredit(){
+        if (super.getBalance()<0) {
+            return -super.getBalance();
+        }else {
+            return 0;
+        }
+    }
+}

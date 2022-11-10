@@ -1,5 +1,7 @@
 package entity;
 
+import BankException.BalanceNotEnoughException;
+
 public abstract class Account {
 
     private final Long id;
@@ -38,12 +40,12 @@ public abstract class Account {
         return account;
     }*/
 
-    public Account deposit(double amount){
+    public final Account deposit(double amount){
         balance += amount;
         return this;
     }
 
-    public abstract Account withdraw(double amount);
+    public abstract Account withdraw(double amount) throws BalanceNotEnoughException;
     public void setPassword(String password) {
         this.password = password;
     }
