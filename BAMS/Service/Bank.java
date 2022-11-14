@@ -47,12 +47,12 @@ public class Bank {
                 ad.insert(acct1);
                 return acct1;
             case 2:
-                LoanSavingAccount acct2 = new LoanSavingAccount();
+                LoanSavingAccount acct2 = new LoanSavingAccount(id,password,name,personID,email);
                 /*System.out.println(id);*/
                 ad.insert(acct2);
                 return acct2;
             case 3:
-                LoanCreditAccount acct3 = new LoanCreditAccount();
+                LoanCreditAccount acct3 = new LoanCreditAccount(id,password,name,personID,email,5000);
                 /*System.out.println(id);*/
                 ad.insert(acct3);
                 return acct3;
@@ -164,6 +164,7 @@ public class Bank {
 
     public TreeSet<VO> rankVO(){
         Set<VO> vo = ((SetDao) ad).getAllVo();
+        for (VO v: vo) {v.setProperty();}
         TreeSet<VO> treeVo = vo.stream().sorted().collect(Collectors.toCollection(TreeSet::new));
         return treeVo;
     }

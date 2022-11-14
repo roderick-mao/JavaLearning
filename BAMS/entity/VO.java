@@ -25,7 +25,11 @@ public class VO implements Comparable<VO> {
 
     @Override
     public int compareTo(VO o) {
-        return Double.compare(property,o.getProperty());
+        if (Double.compare(property,o.getProperty()) == 0){
+            return getName().compareTo(o.getName());
+        }else {
+        return Double.compare(o.getProperty(),property);
+        }
     }
 
     public void setProperty() {
@@ -50,5 +54,10 @@ public class VO implements Comparable<VO> {
             return getPersonID().equals(((VO) obj).getPersonID());
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "姓名："+name+" 身份证号："+personID+" 资产"+property;
     }
 }

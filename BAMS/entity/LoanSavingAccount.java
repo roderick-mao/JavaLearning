@@ -6,7 +6,13 @@ import BankException.LoanException;
 public class LoanSavingAccount extends SavingAccount implements Loanable{
 
     private double loan;
-@Override
+
+    public LoanSavingAccount(Long id, String password, String name, String personId, String email) {
+        super(id, password, name, personId, email);
+        this.loan = 0.0;
+    }
+
+    @Override
     public double getLoan() {
         return loan;
     }

@@ -15,7 +15,7 @@ public class SetDao extends AbstractDao implements IDAO<Account>{
 
     public SetDao(){
         accts = new HashSet<>();
-        vos = new TreeSet<>();
+        vos = new HashSet<>();
     }
 
     public Set<VO> getAllVo() {
