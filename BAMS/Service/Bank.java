@@ -1,30 +1,36 @@
 package Service;
 
 import BankException.*;
+import Dao.AbstractDao;
 import Dao.ArrayDao;
 import Dao.IDAO;
+import Dao.SetDao;
 import entity.*;
+
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class Bank {
 
-    private IDAO<Account> ad;
 
-    private Bank bank;
+    private IDAO<Account> ad = new SetDao();
 
-    private Bank(){
-        super();
-        ad = new ArrayDao();
-    }
+    private static Bank bank;
 
-    public Bank getInstance(){
+
+    public static Bank getInstance(){
         if (bank == null){
             bank = new Bank();
         }
         return bank;
     }
 
-    public Account register(Long id, String password, String repassword,
-                            String name, String personID, String email, int type) throws LoginException {
+    public Account register(String password, String repassword,
+                            String name, String personID, String email, int type)
+            throws LoginException, ATMException, RegisterException {
+
+        Long id = ((SetDao) ad).supplyID();
 
         if (password.compareTo(repassword) != 0 ){
             throw new LoginException("两次密码输入有误");
@@ -32,15 +38,23 @@ public class Bank {
         switch (type){
             case 0:
                 Account acct0 = new SavingAccount(id,password,name,personID,email);
+                /*System.out.println(id);*/
+                ad.insert(acct0);
                 return acct0;
             case 1:
                 Account acct1 = new CreditAccount(id,password,name,personID,email,5000);
+                /*System.out.println(id);*/
+                ad.insert(acct1);
                 return acct1;
             case 2:
                 LoanSavingAccount acct2 = new LoanSavingAccount();
+                /*System.out.println(id);*/
+                ad.insert(acct2);
                 return acct2;
             case 3:
                 LoanCreditAccount acct3 = new LoanCreditAccount();
+                /*System.out.println(id);*/
+                ad.insert(acct3);
                 return acct3;
             default:
                 throw new LoginException("账号类型错误，创建失败");
@@ -146,6 +160,12 @@ public class Bank {
             }
         }
         return sum;
+    }
+
+    public TreeSet<VO> rankVO(){
+        Set<VO> vo = ((SetDao) ad).getAllVo();
+        TreeSet<VO> treeVo = vo.stream().sorted().collect(Collectors.toCollection(TreeSet::new));
+        return treeVo;
     }
 
 }

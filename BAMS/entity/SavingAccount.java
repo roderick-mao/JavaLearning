@@ -20,4 +20,9 @@ public class SavingAccount extends Account{
         }
         return this;
     }
+
+    @Override
+    public double getProperty() {
+        return getBalance();
+    }
 }

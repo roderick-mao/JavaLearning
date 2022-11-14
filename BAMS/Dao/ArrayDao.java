@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
-public class ArrayDao extends AbstractDao implements IDAO{
+public class ArrayDao extends AbstractDao{
     private Account[] accts;
     private int index;
     public ArrayDao(){
@@ -20,7 +20,7 @@ public class ArrayDao extends AbstractDao implements IDAO{
 
     public  Account selectOne(Long id,String pwd) throws LoginException {
         for (int i = 0;i < index;i++){
-            if (id == accts[i].getId() && accts[i].getPassword() == pwd){
+            if (id.equals(accts[i].getId()) && accts[i].getPassword().equals(pwd)){
                 return accts[i];
             }
         }
@@ -39,15 +39,15 @@ public class ArrayDao extends AbstractDao implements IDAO{
         throw new LoginException("未找到匹配账号");
     }
 
-    @Override
+
     public boolean insert(Account acct) {
         if (index == accts.length - 1){
             accts = Arrays.copyOf(accts, accts.length+10);
         }
         accts[++index] = acct;
-        return false;
+        return true;
     }
-    @Override
+
     public Account[] selectAll(){
         return accts;
     }
@@ -69,7 +69,7 @@ public class ArrayDao extends AbstractDao implements IDAO{
 
     public boolean update(Account acc) throws ATMException {
         for (int i = 0;i < index;i++){
-            if (acc.getId() == accts[i].getId()){
+            if (acc.getId().equals(accts[i].getId())){
                 accts[i] = acc;
                 return true;
             }

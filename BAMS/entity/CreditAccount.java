@@ -62,4 +62,9 @@ public class CreditAccount extends Account {
             return 0;
         }
     }
+
+    @Override
+    public double getProperty() {
+        return getRest();
+    }
 }
