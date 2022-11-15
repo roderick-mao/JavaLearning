@@ -33,7 +33,7 @@ public class SetDao extends AbstractDao implements IDAO<Account>{
                         accts.add(e);
                         return true;
                     } else {
-                        throw new RegisterException("用户身份证信息对应姓名已被注册为:" + v.getName());
+                        throw new RegisterException("用户身份证"+v.getPersonID()+"对应姓名已被注册为:" + v.getName());
                     }
                 }
             }

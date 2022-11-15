@@ -1,0 +1,114 @@
+/*
+ * Created by JFormDesigner on Tue Nov 15 10:02:46 CST 2022
+ */
+
+package ATMClient;
+
+import BankException.LoginException;
+import entity.Account;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+/**
+ * @author Brainrain
+ */
+public class LoginPanel extends JPanel {
+
+    private ATMClient atm;
+    public LoginPanel(ATMClient atm) {
+        this.atm = atm;
+        initComponents();
+    }
+
+    private void comfirmBtnMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        Long id = new Long(accountText.getText());
+        String passwd = String.valueOf(passwordField.getPassword());
+        try {
+            Account account = atm.bank.Login(id,passwd);
+        } catch (LoginException ex) {
+            JOptionPane.showMessageDialog(null,ex.toString());
+        }
+        JOptionPane.showMessageDialog(null,"登录成功！");
+
+
+        loginClear();
+
+        CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
+        cardLayout.show(this.getParent(),"businessPanel");
+    }
+
+    public void loginClear(){
+        accountText.setText("");
+        passwordField.setText("");
+    }
+    private void initComponents() {
+        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
+        label1 = new JLabel();
+        label2 = new JLabel();
+        comfirmBtn = new JButton();
+        cancelBtn = new JButton();
+        accountText = new JTextField();
+        passwordField = new JPasswordField();
+
+        //======== this ========
+        setLayout(null);
+
+        //---- label1 ----
+        label1.setText("\u7528\u6237\u8d26\u6237\uff1a");
+        add(label1);
+        label1.setBounds(90, 75, 60, 30);
+
+        //---- label2 ----
+        label2.setText("\u7528\u6237\u5bc6\u7801\uff1a");
+        add(label2);
+        label2.setBounds(90, 145, 60, 30);
+
+        //---- comfirmBtn ----
+        comfirmBtn.setText("\u786e\u8ba4");
+        comfirmBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                comfirmBtnMouseClicked(e);
+            }
+        });
+        add(comfirmBtn);
+        comfirmBtn.setBounds(new Rectangle(new Point(80, 220), comfirmBtn.getPreferredSize()));
+
+        //---- cancelBtn ----
+        cancelBtn.setText("\u53d6\u6d88");
+        add(cancelBtn);
+        cancelBtn.setBounds(230, 220, 78, 30);
+        add(accountText);
+        accountText.setBounds(200, 75, 105, accountText.getPreferredSize().height);
+        add(passwordField);
+        passwordField.setBounds(200, 150, 105, passwordField.getPreferredSize().height);
+
+        {
+            // compute preferred size
+            Dimension preferredSize = new Dimension();
+            for(int i = 0; i < getComponentCount(); i++) {
+                Rectangle bounds = getComponent(i).getBounds();
+                preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+            }
+            Insets insets = getInsets();
+            preferredSize.width += insets.right;
+            preferredSize.height += insets.bottom;
+            setMinimumSize(preferredSize);
+            setPreferredSize(preferredSize);
+        }
+        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+    }
+
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
+    private JLabel label1;
+    private JLabel label2;
+    private JButton comfirmBtn;
+    private JButton cancelBtn;
+    private JTextField accountText;
+    private JPasswordField passwordField;
+    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+}

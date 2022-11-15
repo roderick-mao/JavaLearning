@@ -8,8 +8,8 @@ public class SavingAccount extends Account{
         super();
     }
 
-    public SavingAccount(Long id,String password,String name,String personId,String email){
-        super(id,password,name,personId,email);
+    public SavingAccount(Long id,String password,String name,String personId,String email,AccountType type){
+        super(id,password,name,personId,email,type);
     }
     @Override
     public Account withdraw(double amount) throws BalanceNotEnoughException {

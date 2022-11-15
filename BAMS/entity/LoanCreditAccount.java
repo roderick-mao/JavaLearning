@@ -7,8 +7,8 @@ public class LoanCreditAccount extends CreditAccount implements Loanable{
 
     private double loan;
 
-    public LoanCreditAccount(Long id, String password, String name, String personId, String email, double ceiling) {
-        super(id, password, name, personId, email, ceiling);
+    public LoanCreditAccount(Long id, String password, String name, String personId, String email, AccountType type) {
+        super(id, password, name, personId, email,type);
         this.loan = 0.0;
     }
 

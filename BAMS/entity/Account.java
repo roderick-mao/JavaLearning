@@ -10,20 +10,28 @@ public abstract class Account {
     private String email;
     private double balance;
 
+    AccountType type;
+
+    public AccountType getType() {
+        return type;
+    }
+
     Account(){
         id = 10000L;
         password = "123456";
         vo = null;
         email = "default@test.com";
         balance = 0;
+        type = AccountType.SAVING;
     }
 
-    public Account(Long id,String password,String name,String personId,String email){
+    public Account(Long id,String password,String name,String personId,String email,AccountType type){
         this.id = id;
         this.password = password;
         vo = new VO(name,personId);
         this.email = email;
         this.balance = 0;
+        this.type = type;
     }
 
     public abstract double getProperty();

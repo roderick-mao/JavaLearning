@@ -1,0 +1,151 @@
+JFDML JFormDesigner: "8.0.0.0.194" Java: "17.0.4.1" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label1"
+				"text": "账号类型："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 75
+				"y": 35
+				"width": 65
+				"height": 25
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label2"
+				"text": "姓名："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 65
+				"height": 25
+				"x": 75
+				"y": 70
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label3"
+				"text": "密码："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 65
+				"height": 25
+				"x": 75
+				"y": 105
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label4"
+				"text": "确认密码："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 65
+				"height": 25
+				"x": 75
+				"y": 140
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label5"
+				"text": "身份证号："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 65
+				"height": 25
+				"x": 75
+				"y": 180
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label6"
+				"text": "详细地址："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 65
+				"height": 25
+				"x": 75
+				"y": 215
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label7"
+				"text": "E-Mail:"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 65
+				"height": 25
+				"x": 75
+				"y": 250
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "AccountType"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "普通账户"
+					addElement( "普通账户" )
+					addElement( "信用卡账户" )
+					addElement( "可贷款账户" )
+					addElement( "可贷款信用卡账户" )
+				}
+				"selectedIndex": 3
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 185
+				"y": 30
+				"width": 105
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "nameText"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 185
+				"y": 65
+				"width": 110
+			} )
+			add( new FormComponent( "javax.swing.JPasswordField" ) {
+				name: "passwordField1"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 185
+				"y": 105
+				"width": 110
+			} )
+			add( new FormComponent( "javax.swing.JPasswordField" ) {
+				name: "passwordField2"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 110
+				"height": 30
+				"x": 185
+				"y": 140
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "personIDText"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 110
+				"height": 30
+				"x": 185
+				"y": 175
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "adressText"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 110
+				"height": 30
+				"x": 185
+				"y": 215
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "emailText"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 110
+				"height": 30
+				"x": 185
+				"y": 250
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "commitBtn"
+				"text": "提交"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 65
+				"y": 290
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "backBtn"
+				"text": "返回"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 210
+				"y": 290
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 360, 345 )
+		} )
+	}
+}

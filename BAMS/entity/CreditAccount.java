@@ -9,9 +9,9 @@ public class CreditAccount extends Account {
         super();
         this.ceiling = 0;
     }
-    public CreditAccount(Long id, String password, String name, String personId, String email, double ceiling){
-        super(id,password,name,personId,email);
-        this.ceiling = ceiling;
+    public CreditAccount(Long id, String password, String name, String personId, String email,AccountType type){
+        super(id,password,name,personId,email,type);
+        this.ceiling = 5000;
     }
 
     public double getCeiling() {

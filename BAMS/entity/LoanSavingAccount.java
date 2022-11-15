@@ -7,8 +7,8 @@ public class LoanSavingAccount extends SavingAccount implements Loanable{
 
     private double loan;
 
-    public LoanSavingAccount(Long id, String password, String name, String personId, String email) {
-        super(id, password, name, personId, email);
+    public LoanSavingAccount(Long id, String password, String name, String personId, String email,AccountType type) {
+        super(id, password, name, personId, email,type);
         this.loan = 0.0;
     }
 
