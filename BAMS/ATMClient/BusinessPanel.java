@@ -63,27 +63,35 @@ public class BusinessPanel extends JPanel {
 
     private void commitBtnMouseClicked(MouseEvent e) {
         // TODO add your code here
+        Long id = new Long(accountLabel.getText());
+        Double money = new Double(numField.getText());
         switch (actionType.getItemAt(actionType.getSelectedIndex())){
             case "存款":
                 try {
-                    atm.bank.deposit(Long.getLong(accountLabel.getText()),Double.valueOf(numField.getText()));
+                    atm.bank.deposit(id,money);
                 } catch (LoginException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
             case "取款":
                 String passwd = JOptionPane.showInputDialog("请输入密码：");
                 try {
-                    atm.bank.withdraw(Long.getLong(accountLabel.getText()),passwd,Double.valueOf(numField.getText()));
+                    atm.bank.withdraw(id,passwd,money);
                 } catch (BalanceNotEnoughException | LoginException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
             case "贷款":
                 try {
-                    atm.bank.requestLoan(Long.getLong(accountLabel.getText()),Double.valueOf(numField.getText()));
+                    atm.bank.requestLoan(id,money);
                 } catch (LoanException | TypeException | LoginException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
             case "还款":
+                try {
+                    atm.bank.payLoan(id,money);
+                } catch (LoginException | BalanceNotEnoughException | LoanException | TypeException ex) {
+                    JOptionPane.showMessageDialog(null,ex.toString());
+                }
+            case "":
 
         }
     }
