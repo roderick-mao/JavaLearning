@@ -4,7 +4,14 @@
 
 package ATMClient;
 
+import BankException.ATMException;
+import BankException.LoginException;
+import BankException.RegisterException;
+import entity.Account;
+import entity.AccountType;
+
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
 /**
@@ -19,6 +26,50 @@ public class RegisterPanel extends JPanel {
         initComponents();
     }
 
+    private void commitBtnMouseClicked(MouseEvent e) {
+        // TODO add your code here
+
+        /*if (!passwordField1.getPassword().equals(passwordField2.getPassword())){
+            JOptionPane.showMessageDialog(null,"两次输入密码不一致！");
+            return;
+        }*/
+        String name = nameText.getText();
+        String passwd1 = String.valueOf(passwordField1.getPassword());
+        String passwd2 = String.valueOf(passwordField2.getPassword());
+        String personID = personIDText.getText();
+        String email = emailText.getText();
+        int type = accountType.getSelectedIndex();
+
+        try {
+            Account a = atm.bank.register(passwd1,passwd2,name,personID,email,AccountType.values()[type]);
+            JOptionPane.showConfirmDialog(this.getParent(),"这是您的卡号为："+ a.getId());
+
+            atm.loginPanel.initLogin(a);
+            CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
+            cardLayout.show(this.getParent(),"loginPanel");
+            clear();
+        } catch (LoginException | ATMException | RegisterException | NullPointerException ex) {
+            JOptionPane.showMessageDialog(null,ex.toString());
+        }
+    }
+
+    private void clear(){
+        nameText.setText("");
+        passwordField1.setText("");
+        passwordField2.setText("");
+        personIDText.setText("");
+        adressText.setText("");
+        emailText.setText("");
+        accountType.setSelectedIndex(0);
+    }
+
+    private void backBtnMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
+        cardLayout.show(this.getParent(),"mainPanel");
+        clear();
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -29,7 +80,7 @@ public class RegisterPanel extends JPanel {
         label5 = new JLabel();
         label6 = new JLabel();
         label7 = new JLabel();
-        AccountType = new JComboBox<>();
+        accountType = new JComboBox<>();
         nameText = new JTextField();
         passwordField1 = new JPasswordField();
         passwordField2 = new JPasswordField();
@@ -77,16 +128,16 @@ public class RegisterPanel extends JPanel {
         add(label7);
         label7.setBounds(75, 250, 65, 25);
 
-        //---- AccountType ----
-        AccountType.setModel(new DefaultComboBoxModel<>(new String[] {
+        //---- accountType ----
+        accountType.setModel(new DefaultComboBoxModel<>(new String[] {
             "\u666e\u901a\u8d26\u6237",
             "\u4fe1\u7528\u5361\u8d26\u6237",
             "\u53ef\u8d37\u6b3e\u8d26\u6237",
             "\u53ef\u8d37\u6b3e\u4fe1\u7528\u5361\u8d26\u6237"
         }));
-        AccountType.setSelectedIndex(3);
-        add(AccountType);
-        AccountType.setBounds(185, 30, 105, AccountType.getPreferredSize().height);
+        accountType.setSelectedIndex(3);
+        add(accountType);
+        accountType.setBounds(185, 30, 105, accountType.getPreferredSize().height);
         add(nameText);
         nameText.setBounds(185, 65, 110, nameText.getPreferredSize().height);
         add(passwordField1);
@@ -102,11 +153,23 @@ public class RegisterPanel extends JPanel {
 
         //---- commitBtn ----
         commitBtn.setText("\u63d0\u4ea4");
+        commitBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                commitBtnMouseClicked(e);
+            }
+        });
         add(commitBtn);
         commitBtn.setBounds(new Rectangle(new Point(65, 290), commitBtn.getPreferredSize()));
 
         //---- backBtn ----
         backBtn.setText("\u8fd4\u56de");
+        backBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                backBtnMouseClicked(e);
+            }
+        });
         add(backBtn);
         backBtn.setBounds(new Rectangle(new Point(210, 290), backBtn.getPreferredSize()));
 
@@ -135,7 +198,7 @@ public class RegisterPanel extends JPanel {
     private JLabel label5;
     private JLabel label6;
     private JLabel label7;
-    private JComboBox<String> AccountType;
+    private JComboBox<String> accountType;
     private JTextField nameText;
     private JPasswordField passwordField1;
     private JPasswordField passwordField2;

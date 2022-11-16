@@ -42,12 +42,12 @@ public class CreditAccount extends Account {
         }
     }
 
-    @Override
-    public double getBalance() {
+
+    public double getRest() {
         return super.getBalance()+ceiling;
     }
-
-    public double getRest(){
+    @Override
+    public double getBalance(){
         if(super.getBalance()>0){
             return super.getBalance();
         }else {

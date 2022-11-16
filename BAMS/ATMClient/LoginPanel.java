@@ -28,21 +28,32 @@ public class LoginPanel extends JPanel {
         String passwd = String.valueOf(passwordField.getPassword());
         try {
             Account account = atm.bank.Login(id,passwd);
+            atm.businessPanel.initBusiness(account);
+            CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
+            cardLayout.show(this.getParent(),"businessPanel");
+            loginClear();
         } catch (LoginException ex) {
             JOptionPane.showMessageDialog(null,ex.toString());
         }
         JOptionPane.showMessageDialog(null,"登录成功！");
 
 
-        loginClear();
-
-        CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
-        cardLayout.show(this.getParent(),"businessPanel");
     }
 
     public void loginClear(){
         accountText.setText("");
         passwordField.setText("");
+    }
+
+    private void cancelBtnMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
+        cardLayout.show(this.getParent(),"mainPanel");
+        loginClear();
+    }
+
+    public void initLogin(Account e){
+        accountText.setText(String.valueOf(e.getId()));
     }
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -79,6 +90,12 @@ public class LoginPanel extends JPanel {
 
         //---- cancelBtn ----
         cancelBtn.setText("\u53d6\u6d88");
+        cancelBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                cancelBtnMouseClicked(e);
+            }
+        });
         add(cancelBtn);
         cancelBtn.setBounds(230, 220, 78, 30);
         add(accountText);

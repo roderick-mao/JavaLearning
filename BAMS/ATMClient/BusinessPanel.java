@@ -6,10 +6,7 @@ package ATMClient;
 
 import java.awt.event.*;
 
-import BankException.BalanceNotEnoughException;
-import BankException.LoanException;
-import BankException.LoginException;
-import BankException.TypeException;
+import BankException.*;
 import entity.Account;
 import entity.CreditAccount;
 import entity.Loanable;
@@ -37,25 +34,25 @@ public class BusinessPanel extends JPanel {
         switch (e.getType()){
             case SAVING:
                 String[] s1 = {"存款","取款"};
-                actionType.setModel(new DefaultComboBoxModel(s1));
+                actionType.setModel(new DefaultComboBoxModel<String>(s1));
                 creditLabel.setText("-");
                 loanLabel.setText("-");
 
             case CREDIT:
                 String[] s2 = {"存款","取款","修改额度"};
-                actionType.setModel(new DefaultComboBoxModel(s2));
+                actionType.setModel(new DefaultComboBoxModel<String>(s2));
                 creditLabel.setText(String.valueOf(((CreditAccount) e).getCeiling()));
                 loanLabel.setText("-");
 
             case LOANSAVING:
                 String[] s3 = {"存款","取款","贷款","还款","转账"};
-                actionType.setModel(new DefaultComboBoxModel(s3));
+                actionType.setModel(new DefaultComboBoxModel<String>(s3));
                 loanLabel.setText(String.valueOf(((Loanable)e).getLoan()));
                 creditLabel.setText("-");
 
             case LOANCREDIT:
                 String[] s4 = {"存款","取款","修改额度","贷款","还款","转账"};
-                actionType.setModel(new DefaultComboBoxModel(s4));
+                actionType.setModel(new DefaultComboBoxModel<String>(s4));
                 creditLabel.setText(String.valueOf(((CreditAccount) e).getCeiling()));
                 loanLabel.setText(String.valueOf(((Loanable)e).getLoan()));
         }
@@ -68,32 +65,71 @@ public class BusinessPanel extends JPanel {
         switch (actionType.getItemAt(actionType.getSelectedIndex())){
             case "存款":
                 try {
-                    atm.bank.deposit(id,money);
+                    Account a = atm.bank.deposit(id,money);
+                    initBusiness(a);
                 } catch (LoginException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
             case "取款":
-                String passwd = JOptionPane.showInputDialog("请输入密码：");
+                String passwd1 = JOptionPane.showInputDialog("请输入密码：");
                 try {
-                    atm.bank.withdraw(id,passwd,money);
+                    Account a = atm.bank.withdraw(id,passwd1,money);
+                    initBusiness(a);
                 } catch (BalanceNotEnoughException | LoginException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
             case "贷款":
                 try {
-                    atm.bank.requestLoan(id,money);
+                    Account a = atm.bank.requestLoan(id,money);
+                    initBusiness(a);
                 } catch (LoanException | TypeException | LoginException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
             case "还款":
                 try {
-                    atm.bank.payLoan(id,money);
+                    Account a = atm.bank.payLoan(id,money);
+                    initBusiness(a);
                 } catch (LoginException | BalanceNotEnoughException | LoanException | TypeException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
-            case "":
+            case "转账":
+                Long to = new Long(JOptionPane.showInputDialog("请输入目标账户："));
+                String passwd2 = JOptionPane.showInputDialog("请输入密码：");
+                try {
+                    atm.bank.transfer(id,passwd2,to,money);
+                    Account a = atm.bank.Login(id,passwd2);
+                    initBusiness(a);
+                } catch (BalanceNotEnoughException | TransferException | LoginException ex) {
+                    JOptionPane.showMessageDialog(null,ex.toString());
+                }
+
+            case "修改额度":
+                String passwd3 = JOptionPane.showInputDialog("请输入密码：");
+                try {
+                    Account a = atm.bank.updateCeiling(id,passwd3,money);
+                    initBusiness(a);
+                } catch (TypeException | LoginException ex) {
+                    JOptionPane.showMessageDialog(null,ex.toString());
+                }
 
         }
+    }
+
+    private void backBtnMouseClicked(MouseEvent e) {
+        // TODO add your code here
+        CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
+        cardLayout.show(this.getParent(),"loginPanel");
+        clear();
+
+    }
+
+    private void clear(){
+        accountLabel.setText("");
+        nameLabel.setText("");
+        restLabel.setText("");
+        creditLabel.setText("");
+        loanLabel.setText("");
+        actionType.setModel(new DefaultComboBoxModel<String>());
     }
 
     private void initComponents() {
@@ -175,6 +211,12 @@ public class BusinessPanel extends JPanel {
 
         //---- backBtn ----
         backBtn.setText("\u8fd4\u56de");
+        backBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                backBtnMouseClicked(e);
+            }
+        });
         add(backBtn);
         backBtn.setBounds(200, 240, 78, 30);
 
