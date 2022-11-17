@@ -21,7 +21,7 @@ public class ATMClient extends JFrame {
         //初始化窗体
         this.setTitle("ATM");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(500,650);
+        this.setSize(400,450);
         this.setLocationRelativeTo(getOwner());
 
         //初始化资源

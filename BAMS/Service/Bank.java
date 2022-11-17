@@ -30,39 +30,42 @@ public class Bank {
     public Account register(String password, String repassword,
                             String name, String personID, String email, AccountType type)
             throws LoginException, ATMException, RegisterException {
+        if (password != null && repassword!=null && name!=null && personID!=null && type!=null
+        && !password.equals("") && !repassword.equals("") && !name.equals("") && !personID.equals("") && !type.equals("")) {
 
+            if (password.compareTo(repassword) != 0) {
+                throw new RegisterException("两次密码输入有误");
+            }
 
+            ((SetDao) ad).hasPerson(name, personID);
+            Long id = ((SetDao) ad).supplyID();
 
-        if (password.compareTo(repassword) != 0 ){
-            throw new LoginException("两次密码输入有误");
-        }
-
-        ((SetDao) ad).hasPerson(name,personID);
-        Long id = ((SetDao) ad).supplyID();
-
-        switch (type){
-            case SAVING:
-                SavingAccount acct0 = new SavingAccount(id,password,name,personID,email,type);
-                System.out.println(id);
-                ad.insert(acct0);
-                return acct0;
-            case CREDIT:
-                CreditAccount acct1 = new CreditAccount(id,password,name,personID,email,type);
-                System.out.println(id);
-                ad.insert(acct1);
-                return acct1;
-            case LOANSAVING:
-                LoanSavingAccount acct2 = new LoanSavingAccount(id,password,name,personID,email,type);
-                System.out.println(id);
-                ad.insert(acct2);
-                return acct2;
-            case LOANCREDIT:
-                LoanCreditAccount acct3 = new LoanCreditAccount(id,password,name,personID,email,type);
-                System.out.println(id);
-                ad.insert(acct3);
-                return acct3;
-            default:
-                throw new LoginException("账号类型错误，创建失败");
+            switch (type) {
+                case SAVING:
+                    SavingAccount acct0 = new SavingAccount(id, password, name, personID, email, type);
+                    System.out.println(id);
+                    ad.insert(acct0);
+                    return acct0;
+                case CREDIT:
+                    CreditAccount acct1 = new CreditAccount(id, password, name, personID, email, type);
+                    System.out.println(id);
+                    ad.insert(acct1);
+                    return acct1;
+                case LOANSAVING:
+                    LoanSavingAccount acct2 = new LoanSavingAccount(id, password, name, personID, email, type);
+                    System.out.println(id);
+                    ad.insert(acct2);
+                    return acct2;
+                case LOANCREDIT:
+                    LoanCreditAccount acct3 = new LoanCreditAccount(id, password, name, personID, email, type);
+                    System.out.println(id);
+                    ad.insert(acct3);
+                    return acct3;
+                default:
+                    throw new RegisterException("账号类型错误，创建失败");
+            }
+        }else {
+            throw new RegisterException("信息不能为空！");
         }
     }
 
