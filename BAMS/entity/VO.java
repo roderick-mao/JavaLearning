@@ -1,6 +1,9 @@
 package entity;
 
+import BankException.ATMException;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class VO implements Comparable<VO> {
@@ -8,7 +11,7 @@ public class VO implements Comparable<VO> {
     private final String personID;
     private double property;
 
-    private List<Account> bindCards = new ArrayList<>();
+    private List<Account> bindCards = new LinkedList<>();
 
     public boolean addCards(Account e){
         if (e!=null) {
@@ -59,5 +62,24 @@ public class VO implements Comparable<VO> {
     @Override
     public String toString() {
         return "姓名："+name+" 身份证号："+personID+" 资产"+property;
+    }
+
+    public boolean removeCard(Account e) throws ATMException {
+        if (e != null){
+            Account del = null;
+            for (Account a : bindCards){
+                if (e.getId().equals(a.getId())){
+                    del = a;
+                }
+            }
+            if (del != null){
+                bindCards.remove(del);
+                return true;
+            }else {
+                throw new ATMException("未找到需要移除账户");
+            }
+
+        }
+        throw new ATMException("需要删除的卡不可为空！");
     }
 }

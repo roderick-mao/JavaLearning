@@ -31,20 +31,23 @@ public class Bank {
                             String name, String personID, String email, AccountType type)
             throws LoginException, ATMException, RegisterException {
 
-        Long id = ((SetDao) ad).supplyID();
+
 
         if (password.compareTo(repassword) != 0 ){
             throw new LoginException("两次密码输入有误");
         }
 
+        ((SetDao) ad).hasPerson(name,personID);
+        Long id = ((SetDao) ad).supplyID();
+
         switch (type){
             case SAVING:
-                Account acct0 = new SavingAccount(id,password,name,personID,email,type);
+                SavingAccount acct0 = new SavingAccount(id,password,name,personID,email,type);
                 System.out.println(id);
                 ad.insert(acct0);
                 return acct0;
             case CREDIT:
-                Account acct1 = new CreditAccount(id,password,name,personID,email,type);
+                CreditAccount acct1 = new CreditAccount(id,password,name,personID,email,type);
                 System.out.println(id);
                 ad.insert(acct1);
                 return acct1;
@@ -77,10 +80,12 @@ public class Bank {
     }
 
     public boolean transfer(Long from, String fromPasswd ,Long to, double money)
-            throws  BalanceNotEnoughException, TransferException, LoginException {
+            throws BalanceNotEnoughException, TransferException, LoginException, ATMException {
         if (from != null && fromPasswd != null && !fromPasswd.equals("")){
             Account fromAccount = ad.selectOne(from,fromPasswd);
-            Account toAccount = ad.selectOne(from);
+            Account toAccount = ad.selectOne(to);
+            /*ad.update(fromAccount.withdraw(money));
+            ad.update(toAccount.deposit(money));*/
             fromAccount.withdraw(money);
             toAccount.deposit(money);
             return true;

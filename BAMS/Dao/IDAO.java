@@ -15,7 +15,7 @@ public interface IDAO<E> {
 
     public boolean delete(Long id) throws ATMException;
 
-    public boolean update(Account acct) throws ATMException;
+    public boolean update(Account acct) throws ATMException, LoginException;
 
     public E selectOne(Long id) throws LoginException;
     public E selectOne(Long id,String passwd) throws  LoginException;

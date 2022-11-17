@@ -44,8 +44,10 @@ public class CreditAccount extends Account {
 
 
     public double getRest() {
-        return super.getBalance()+ceiling;
+        return ceiling-this.getUsedCredit();
     }
+
+
     @Override
     public double getBalance(){
         if(super.getBalance()>0){
@@ -55,7 +57,7 @@ public class CreditAccount extends Account {
         }
     }
 
-    public double getCredit(){
+    public double getUsedCredit(){
         if (super.getBalance()<0) {
             return -super.getBalance();
         }else {
@@ -65,6 +67,6 @@ public class CreditAccount extends Account {
 
     @Override
     public double getProperty() {
-        return getRest();
+        return getBalance();
     }
 }

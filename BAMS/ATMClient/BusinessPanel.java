@@ -31,30 +31,36 @@ public class BusinessPanel extends JPanel {
         accountLabel.setText(String.valueOf(e.getId()));
         nameLabel.setText(e.getVo().getName());
         restLabel.setText(String.valueOf(e.getBalance()));
+        numField.setText("");
         switch (e.getType()){
-            case SAVING:
-                String[] s1 = {"存款","取款"};
+            case SAVING: {
+                String[] s1 = {"存款", "取款", "转账"};
                 actionType.setModel(new DefaultComboBoxModel<String>(s1));
                 creditLabel.setText("-");
                 loanLabel.setText("-");
-
-            case CREDIT:
-                String[] s2 = {"存款","取款","修改额度"};
+                break;
+            }
+            case CREDIT: {
+                String[] s2 = {"存款", "取款", "修改额度", "转账"};
                 actionType.setModel(new DefaultComboBoxModel<String>(s2));
-                creditLabel.setText(String.valueOf(((CreditAccount) e).getCeiling()));
+                creditLabel.setText(String.valueOf(((CreditAccount) e).getRest()));
                 loanLabel.setText("-");
-
-            case LOANSAVING:
-                String[] s3 = {"存款","取款","贷款","还款","转账"};
+                break;
+            }
+            case LOANSAVING: {
+                String[] s3 = {"存款", "取款", "贷款", "还款", "转账"};
                 actionType.setModel(new DefaultComboBoxModel<String>(s3));
-                loanLabel.setText(String.valueOf(((Loanable)e).getLoan()));
+                loanLabel.setText(String.valueOf(((Loanable) e).getLoan()));
                 creditLabel.setText("-");
-
-            case LOANCREDIT:
-                String[] s4 = {"存款","取款","修改额度","贷款","还款","转账"};
+                break;
+            }
+            case LOANCREDIT: {
+                String[] s4 = {"存款", "取款", "修改额度", "贷款", "还款", "转账"};
                 actionType.setModel(new DefaultComboBoxModel<String>(s4));
-                creditLabel.setText(String.valueOf(((CreditAccount) e).getCeiling()));
-                loanLabel.setText(String.valueOf(((Loanable)e).getLoan()));
+                creditLabel.setText(String.valueOf(((CreditAccount) e).getRest()));
+                loanLabel.setText(String.valueOf(((Loanable) e).getLoan()));
+                break;
+            }
         }
     }
 
@@ -70,6 +76,7 @@ public class BusinessPanel extends JPanel {
                 } catch (LoginException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
+                break;
             case "取款":
                 String passwd1 = JOptionPane.showInputDialog("请输入密码：");
                 try {
@@ -78,6 +85,7 @@ public class BusinessPanel extends JPanel {
                 } catch (BalanceNotEnoughException | LoginException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
+                break;
             case "贷款":
                 try {
                     Account a = atm.bank.requestLoan(id,money);
@@ -85,6 +93,7 @@ public class BusinessPanel extends JPanel {
                 } catch (LoanException | TypeException | LoginException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
+                break;
             case "还款":
                 try {
                     Account a = atm.bank.payLoan(id,money);
@@ -92,6 +101,7 @@ public class BusinessPanel extends JPanel {
                 } catch (LoginException | BalanceNotEnoughException | LoanException | TypeException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
+                break;
             case "转账":
                 Long to = new Long(JOptionPane.showInputDialog("请输入目标账户："));
                 String passwd2 = JOptionPane.showInputDialog("请输入密码：");
@@ -99,10 +109,10 @@ public class BusinessPanel extends JPanel {
                     atm.bank.transfer(id,passwd2,to,money);
                     Account a = atm.bank.Login(id,passwd2);
                     initBusiness(a);
-                } catch (BalanceNotEnoughException | TransferException | LoginException ex) {
+                } catch (BalanceNotEnoughException | TransferException | ATMException | LoginException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
-
+                break;
             case "修改额度":
                 String passwd3 = JOptionPane.showInputDialog("请输入密码：");
                 try {
@@ -111,6 +121,7 @@ public class BusinessPanel extends JPanel {
                 } catch (TypeException | LoginException ex) {
                     JOptionPane.showMessageDialog(null,ex.toString());
                 }
+                break;
 
         }
     }
@@ -130,6 +141,7 @@ public class BusinessPanel extends JPanel {
         creditLabel.setText("");
         loanLabel.setText("");
         actionType.setModel(new DefaultComboBoxModel<String>());
+        numField.setText("");
     }
 
     private void initComponents() {
@@ -188,7 +200,7 @@ public class BusinessPanel extends JPanel {
         add(numField);
         numField.setBounds(175, 200, 85, numField.getPreferredSize().height);
         add(accountLabel);
-        accountLabel.setBounds(190, 30, 75, 25);
+        accountLabel.setBounds(190, 30, 135, 25);
         add(nameLabel);
         nameLabel.setBounds(190, 60, 75, 25);
         add(restLabel);

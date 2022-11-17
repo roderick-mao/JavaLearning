@@ -22,6 +22,19 @@ public class SetDao extends AbstractDao implements IDAO<Account>{
         return vos;
     }
 
+    public boolean hasPerson(String name,String personID) throws RegisterException {
+        for (VO v : vos) {
+            if (v.getPersonID().equals(personID)) {
+                if (v.getName().equals(name)) {
+                    return true;
+                } else {
+                    throw new RegisterException("用户身份证"+v.getPersonID()+"对应姓名已被注册为:" + v.getName());
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean insert(Account e) throws RegisterException {
         if (e != null) {
@@ -62,7 +75,7 @@ public class SetDao extends AbstractDao implements IDAO<Account>{
     }
 
     @Override
-    public boolean update(Account acct) {
+    public boolean update(Account acct) throws LoginException, ATMException {
         if (acct != null) {
             Iterator<Account> iterator = accts.iterator();
             boolean flag = false;
@@ -73,12 +86,15 @@ public class SetDao extends AbstractDao implements IDAO<Account>{
                     flag = true;
                 }
             }
+
             if (flag == true) {
                 accts.add(acct);
                 return true;
+            }else {
+                throw new LoginException("未找到账户：" + acct.getId());
             }
         }
-        return false;
+        throw new ATMException("账户不能为空");
     }
 
     @Override

@@ -29,13 +29,14 @@ public class LoginPanel extends JPanel {
         try {
             Account account = atm.bank.Login(id,passwd);
             atm.businessPanel.initBusiness(account);
+            JOptionPane.showMessageDialog(null,"登录成功！");
             CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
             cardLayout.show(this.getParent(),"businessPanel");
             loginClear();
         } catch (LoginException ex) {
             JOptionPane.showMessageDialog(null,ex.toString());
         }
-        JOptionPane.showMessageDialog(null,"登录成功！");
+
 
 
     }
