@@ -18,8 +18,8 @@ public interface IDAO<E> {
     public boolean update(Account acct) throws ATMException, LoginException;
 
     public E selectOne(Long id) throws LoginException;
-    public E selectOne(Long id,String passwd) throws  LoginException;
 
+    public E selectOne(Long id,String passwd) throws  LoginException;
 
     public Collection<E> selectAll();
 }
