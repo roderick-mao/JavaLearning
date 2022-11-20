@@ -24,14 +24,19 @@ public class LoginPanel extends JPanel {
 
     private void comfirmBtnMouseClicked(MouseEvent e) {
         // TODO add your code here
-        Long id = new Long(accountText.getText());
-        String passwd = String.valueOf(passwordField.getPassword());
         try {
-            Account account = atm.bank.Login(id,passwd);
+            Long id;
+            if (!accountText.getText().equals("")) {
+                id = new Long(accountText.getText());
+            } else {
+                throw new LoginException("账号不能为空！");
+            }
+            String passwd = String.valueOf(passwordField.getPassword());
+            Account account = atm.bank.Login(id, passwd);
             atm.businessPanel.initBusiness(account);
-            JOptionPane.showMessageDialog(null,"登录成功！");
+            JOptionPane.showMessageDialog(null, "登录成功！");
             CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
-            cardLayout.show(this.getParent(),"businessPanel");
+            cardLayout.show(this.getParent(), "businessPanel");
             loginClear();
         } catch (LoginException ex) {
             JOptionPane.showMessageDialog(null,ex.toString());
