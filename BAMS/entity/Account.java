@@ -2,7 +2,9 @@ package entity;
 
 import BankException.BalanceNotEnoughException;
 
-public abstract class Account {
+import java.io.Serializable;
+
+public abstract class Account implements Serializable {
 
     private final Long id;
     private String password;

@@ -5,8 +5,10 @@ import Dao.SetDao;
 import Service.Bank;
 import entity.AccountType;
 
+import java.io.IOException;
+
 public class Test {
-    public static void main(String[] args) throws LoginException, ATMException, RegisterException, BalanceNotEnoughException, TransferException {
+    /*public static void main(String[] args) throws LoginException, ATMException, RegisterException, BalanceNotEnoughException, TransferException, IOException, ClassNotFoundException {
         Bank bank = Bank.getInstance();
         System.out.println(bank.register("123","123","aaa","111","abc", AccountType.SAVING).getId());
         System.out.println(bank.register("123","123","aaa","111","abc",AccountType.CREDIT).getId());
@@ -17,11 +19,11 @@ public class Test {
         bank.deposit(new Long("86202211170003"),5000).getProperty();
         bank.deposit(new Long("86202211170004"),5000).getProperty();
         bank.transfer(86202211170001L,"123",86202211170003L,5000);
-        /*System.out.println( bank.Login(86202211170001L,"123").getBalance());
-        System.out.println( bank.Login(86202211170003L,"123").getBalance());*/
+        System.out.println( bank.Login(86202211170001L,"123").getBalance());
+        System.out.println( bank.Login(86202211170003L,"123").getBalance());
 
 
         bank.rankVO().forEach(System.out::println);
 
-    }
+    }*/
 }

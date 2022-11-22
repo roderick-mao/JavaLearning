@@ -1,6 +1,8 @@
 package entity;
 
-public enum AccountType {
+import java.io.Serializable;
+
+public enum AccountType implements Serializable {
     SAVING,
     CREDIT,
     LOANSAVING,

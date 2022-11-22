@@ -6,6 +6,7 @@ import entity.Account;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 
 public class ATMClient extends JFrame {
@@ -15,7 +16,6 @@ public class ATMClient extends JFrame {
      RegisterPanel registerPanel;
 
      Bank bank;
-     Account account;
 
     public ATMClient(){
         //初始化窗体
@@ -25,7 +25,11 @@ public class ATMClient extends JFrame {
         this.setLocationRelativeTo(getOwner());
 
         //初始化资源
-        bank = Bank.getInstance();
+        try {
+            bank = Bank.getInstance();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         //实例化panel界面
 

@@ -1,18 +1,31 @@
 package Dao;
 
 import BankException.ATMException;
-import BankException.RegisterException;
-import entity.Account;
-import entity.VO;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Set;
 
 public abstract class AbstractDao {
 
 
-    private  String registerIndex = "86";
+    private static String registerIndex;
+
+    public AbstractDao() {
+        File f = new File("CardIds");
+        if(f.exists() && f.length() > 0) {
+            BufferedReader br = null;
+            try {
+                br = new BufferedReader(new FileReader(f));
+                registerIndex = br.lines().reduce((a, b) -> b).get();
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            registerIndex = "";
+        }
+    }
 
     public  String getRegisterIndex() {
         return registerIndex;
@@ -22,11 +35,18 @@ public abstract class AbstractDao {
         registerIndex = input;
     }
 
-    public  void setRegisterIndexFromFile(){
-        registerIndex = "";
+    public  void setRegisterIndexFromFile() throws IOException {
+        File f = new File("CardIds");
+        if(f.exists() && f.length()>0){
+            BufferedReader br = new BufferedReader(new FileReader(f));
+            registerIndex = br.lines().reduce((a,b)->b).get();
+            br.close();
+        }else {
+            throw new FileNotFoundException("CardIds 文件不存在");
+        }
     }
 
-    public  Long supplyID( ) throws ATMException {
+    public static Long supplyID( ) throws ATMException, IOException {
         LocalDate date = LocalDate.now();
         String dateNum = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         if ( registerIndex == null || registerIndex.equals("") ||
@@ -43,7 +63,11 @@ public abstract class AbstractDao {
             }
         }
         //后期将 registerIndex 写入文件保存
-        
+        File f = new File("CardIds");
+        BufferedWriter bw = new BufferedWriter(new FileWriter(f,true));
+        bw.write(registerIndex);
+        bw.newLine();
+        bw.close();
         return new Long(registerIndex);
     }
 }

@@ -2,11 +2,12 @@ package entity;
 
 import BankException.ATMException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class VO implements Comparable<VO> {
+public class VO implements Comparable<VO>, Serializable {
     private final String name;
     private final String personID;
     private double property;

@@ -1,13 +1,11 @@
 package Service;
 
 import BankException.*;
-import Dao.AbstractDao;
-import Dao.ArrayDao;
-import Dao.IDAO;
-import Dao.SetDao;
+import Dao.*;
 
 import entity.*;
 
+import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -15,12 +13,16 @@ import java.util.stream.Collectors;
 public class Bank {
 
 
-    private IDAO<Account> ad = new SetDao();
+    private IDAO<Account> ad ;
 
     private static Bank bank;
 
+    private Bank() throws IOException, ClassNotFoundException {
+        this.ad = new FileSetDao();
+    }
 
-    public static Bank getInstance(){
+
+    public static Bank getInstance() throws IOException, ClassNotFoundException {
         if (bank == null){
             bank = new Bank();
         }
@@ -29,7 +31,7 @@ public class Bank {
 
     public Account register(String password, String repassword,
                             String name, String personID, String email, AccountType type)
-            throws LoginException, ATMException, RegisterException {
+            throws LoginException, ATMException, RegisterException, IOException {
         if (password != null && repassword!=null && name!=null && personID!=null && type!=null
         && !password.equals("") && !repassword.equals("") && !name.equals("") && !personID.equals("") && !type.equals("")) {
 
@@ -37,8 +39,8 @@ public class Bank {
                 throw new RegisterException("两次密码输入有误");
             }
 
-            ((SetDao) ad).hasPerson(name, personID);
-            Long id = ((SetDao) ad).supplyID();
+            ad.hasPerson(name, personID);
+            Long id = ((FileSetDao) ad).supplyID();
 
             switch (type) {
                 case SAVING:
@@ -73,24 +75,26 @@ public class Bank {
         return ad.selectOne(id,passwd);
     }
 
-    public Account deposit (Long id, double money) throws LoginException {
-        return ad.selectOne(id).deposit(money);
+    public Account deposit (Long id, double money) throws LoginException, ATMException, IOException {
+        Account a = ad.selectOne(id).deposit(money);
+        ad.update(a);
+        return a;
     }
 
     public Account withdraw(Long id, String passwd,double money)
-            throws BalanceNotEnoughException, LoginException {
-        return ad.selectOne(id,passwd).withdraw(money);
+            throws BalanceNotEnoughException, LoginException, ATMException, IOException {
+        Account a = ad.selectOne(id,passwd).withdraw(money);
+        ad.update(a);
+        return a;
     }
 
     public boolean transfer(Long from, String fromPasswd ,Long to, double money)
-            throws BalanceNotEnoughException, TransferException, LoginException, ATMException {
+            throws BalanceNotEnoughException, TransferException, LoginException, ATMException, IOException {
         if (from != null && fromPasswd != null && !fromPasswd.equals("")){
             Account fromAccount = ad.selectOne(from,fromPasswd);
             Account toAccount = ad.selectOne(to);
-            /*ad.update(fromAccount.withdraw(money));
-            ad.update(toAccount.deposit(money));*/
-            fromAccount.withdraw(money);
-            toAccount.deposit(money);
+            ad.update(fromAccount.withdraw(money));
+            ad.update(toAccount.deposit(money));
             return true;
         }else {
             throw new LoginException("账号信息不能为空");
@@ -98,10 +102,11 @@ public class Bank {
     }
 
     public Account updateCeiling(Long id,String passwd,double money)
-            throws TypeException, LoginException {
+            throws TypeException, LoginException, ATMException, IOException {
         Account acct = ad.selectOne(id,passwd);
         if (acct instanceof CreditAccount){
             ((CreditAccount) acct).setCeiling(money);
+            ad.update(acct);
             return acct;
         }else {
             throw new TypeException("该账号无法修改额度");
@@ -138,12 +143,13 @@ public class Bank {
         return credits;
     }
 
-    public Account requestLoan(Long id, double money) throws LoanException, LoginException, TypeException {
+    public Account requestLoan(Long id, double money) throws LoanException, LoginException, TypeException, ATMException, IOException {
         Account acct = null;
             acct = ad.selectOne(id);
             if (acct instanceof Loanable){
-                //后期用try
-                    return  ((Loanable) acct).requestLoan(money);
+                Account a = ((Loanable) acct).requestLoan(money);
+                ad.update(a);
+                return  a;
             }else {
                 //throw
                 /*System.out.println("本账号无法办理贷款");
@@ -152,11 +158,13 @@ public class Bank {
         }
     }
 
-    public Account payLoan(Long id ,double money) throws LoginException, BalanceNotEnoughException, LoanException, TypeException {
+    public Account payLoan(Long id ,double money) throws LoginException, BalanceNotEnoughException, LoanException, TypeException, ATMException, IOException {
         Account acct = null;
         acct = ad.selectOne(id);
         if (acct instanceof Loanable){
-            return  ((Loanable) acct).payLoan(money);
+            Account a = ((Loanable) acct).payLoan(money);
+            ad.update(a);
+            return  a;
         }else {
             throw new TypeException("本账号无贷款功能，无法还款");
         }
@@ -173,7 +181,7 @@ public class Bank {
     }
 
     public TreeSet<VO> rankVO(){
-        Set<VO> vo = ((SetDao) ad).getAllVo();
+        Set<VO> vo = ((FileSetDao) ad).getAllVo();
         for (VO v: vo) {v.setProperty();}
         TreeSet<VO> treeVo = vo.stream().sorted().collect(Collectors.toCollection(TreeSet::new));
         return treeVo;

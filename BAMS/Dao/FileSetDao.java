@@ -1,27 +1,42 @@
 package Dao;
 
-import BankException.*;
-import entity.*;
+import BankException.ATMException;
+import BankException.LoginException;
+import BankException.RegisterException;
+import entity.Account;
+import entity.VO;
+
+import java.io.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeSet;
 
-public class SetDao extends AbstractDao implements IDAO<Account>{
+public class FileSetDao extends AbstractDao implements IDAO<Account>,Serializable {
 
     private Set<Account> accts;
-
     private Set<VO> vos;
 
-    public SetDao(){
-        accts = new HashSet<>();
-        vos = new HashSet<>();
+    public FileSetDao() throws IOException, ClassNotFoundException {
+        super();
+        File f = new File("Accounts");
+        if (f.exists()&& f.length()>0){
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+            FileSetDao fileSetDao = (FileSetDao) ois.readObject();
+            this.accts = fileSetDao.accts;
+            this.vos = fileSetDao.vos;
+            ois.close();
+        }else {
+            accts = new HashSet<>();
+            vos = new HashSet<>();
+        }
     }
 
     public Set<VO> getAllVo() {
         return vos;
     }
 
+    @Override
     public boolean hasPerson(String name,String personID) throws RegisterException {
         for (VO v : vos) {
             if (v.getPersonID().equals(personID)) {
@@ -35,8 +50,15 @@ public class SetDao extends AbstractDao implements IDAO<Account>{
         return false;
     }
 
+    public boolean updateAll() throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Accounts"));
+        oos.writeObject(this);
+        oos.close();
+        return true;
+    }
+
     @Override
-    public boolean insert(Account e) throws RegisterException {
+    public boolean insert(Account e) throws RegisterException, IOException {
         if (e != null) {
             for (VO v : vos) {
                 if (v.equals(e.getVo()) && v.getPersonID().equals(e.getVo().getPersonID())) {
@@ -53,29 +75,35 @@ public class SetDao extends AbstractDao implements IDAO<Account>{
             e.getVo().addCards(e);
             vos.add(e.getVo());
             accts.add(e);
-
+            updateAll();
             return true;
         }
         throw new NullPointerException("账号不可为空");
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(Long id) throws ATMException, IOException {
         if (id != null) {
             Iterator<Account> iterator = accts.iterator();
+            boolean flag = false;
             while (iterator.hasNext()) {
                 Account e = iterator.next();
                 if (e.getId().equals(id)) {
                     iterator.remove();
-                    return true;
+                    flag = true;
+                    break;
                 }
+            }
+            if (flag){
+                updateAll();
+                return true;
             }
         }
         return false;
     }
 
     @Override
-    public boolean update(Account acct) throws LoginException, ATMException {
+    public boolean update(Account acct) throws ATMException, LoginException, IOException {
         if (acct != null) {
             Iterator<Account> iterator = accts.iterator();
             boolean flag = false;
@@ -89,6 +117,7 @@ public class SetDao extends AbstractDao implements IDAO<Account>{
 
             if (flag == true) {
                 accts.add(acct);
+                updateAll();
                 return true;
             }else {
                 throw new LoginException("未找到账户：" + acct.getId());
@@ -112,7 +141,7 @@ public class SetDao extends AbstractDao implements IDAO<Account>{
     public Account selectOne(Long id, String passwd) throws LoginException {
         if (id != null && passwd != null && !id.equals("") && !passwd.equals("")){
             for (Account e:
-                 accts) {
+                    accts) {
                 if (e.getId().equals(id) && e.getPassword().equals(passwd)){
                     return e;
                 }
@@ -123,7 +152,7 @@ public class SetDao extends AbstractDao implements IDAO<Account>{
     }
 
     @Override
-    public Set<Account> selectAll() {
+    public Collection<Account> selectAll() {
         return accts;
     }
 }

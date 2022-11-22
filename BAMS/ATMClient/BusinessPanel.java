@@ -12,6 +12,7 @@ import entity.CreditAccount;
 import entity.Loanable;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -67,62 +68,65 @@ public class BusinessPanel extends JPanel {
     private void commitBtnMouseClicked(MouseEvent e) {
         // TODO add your code here
         Long id = new Long(accountLabel.getText());
-        Double money = new Double(numField.getText());
-        switch (actionType.getItemAt(actionType.getSelectedIndex())){
-            case "存款":
-                try {
-                    Account a = atm.bank.deposit(id,money);
-                    initBusiness(a);
-                } catch (LoginException ex) {
-                    JOptionPane.showMessageDialog(null,ex.toString());
-                }
-                break;
-            case "取款":
-                String passwd1 = JOptionPane.showInputDialog("请输入密码：");
-                try {
-                    Account a = atm.bank.withdraw(id,passwd1,money);
-                    initBusiness(a);
-                } catch (BalanceNotEnoughException | LoginException ex) {
-                    JOptionPane.showMessageDialog(null,ex.toString());
-                }
-                break;
-            case "贷款":
-                try {
-                    Account a = atm.bank.requestLoan(id,money);
-                    initBusiness(a);
-                } catch (LoanException | TypeException | LoginException ex) {
-                    JOptionPane.showMessageDialog(null,ex.toString());
-                }
-                break;
-            case "还款":
-                try {
-                    Account a = atm.bank.payLoan(id,money);
-                    initBusiness(a);
-                } catch (LoginException | BalanceNotEnoughException | LoanException | TypeException ex) {
-                    JOptionPane.showMessageDialog(null,ex.toString());
-                }
-                break;
-            case "转账":
-                Long to = new Long(JOptionPane.showInputDialog("请输入目标账户："));
-                String passwd2 = JOptionPane.showInputDialog("请输入密码：");
-                try {
-                    atm.bank.transfer(id,passwd2,to,money);
-                    Account a = atm.bank.Login(id,passwd2);
-                    initBusiness(a);
-                } catch (BalanceNotEnoughException | TransferException | ATMException | LoginException ex) {
-                    JOptionPane.showMessageDialog(null,ex.toString());
-                }
-                break;
-            case "修改额度":
-                String passwd3 = JOptionPane.showInputDialog("请输入密码：");
-                try {
-                    Account a = atm.bank.updateCeiling(id,passwd3,money);
-                    initBusiness(a);
-                } catch (TypeException | LoginException ex) {
-                    JOptionPane.showMessageDialog(null,ex.toString());
-                }
-                break;
-
+        if (numField.getText() !=null && !numField.getText().equals("")) {
+            Double money = new Double(numField.getText());
+            switch (actionType.getItemAt(actionType.getSelectedIndex())) {
+                case "存款":
+                    try {
+                        Account a = atm.bank.deposit(id, money);
+                        initBusiness(a);
+                    } catch (LoginException | ATMException | IOException ex) {
+                        JOptionPane.showMessageDialog(null, ex.toString());
+                    }
+                    break;
+                case "取款":
+                    String passwd1 = JOptionPane.showInputDialog("请输入密码：");
+                    try {
+                        Account a = atm.bank.withdraw(id, passwd1, money);
+                        initBusiness(a);
+                    } catch (BalanceNotEnoughException | LoginException | ATMException | IOException ex) {
+                        JOptionPane.showMessageDialog(null, ex.toString());
+                    }
+                    break;
+                case "贷款":
+                    try {
+                        Account a = atm.bank.requestLoan(id, money);
+                        initBusiness(a);
+                    } catch (LoanException | TypeException | LoginException | ATMException | IOException ex) {
+                        JOptionPane.showMessageDialog(null, ex.toString());
+                    }
+                    break;
+                case "还款":
+                    try {
+                        Account a = atm.bank.payLoan(id, money);
+                        initBusiness(a);
+                    } catch (LoginException | BalanceNotEnoughException | LoanException | TypeException | ATMException | IOException ex) {
+                        JOptionPane.showMessageDialog(null, ex.toString());
+                    }
+                    break;
+                case "转账":
+                    Long to = new Long(JOptionPane.showInputDialog("请输入目标账户："));
+                    String passwd2 = JOptionPane.showInputDialog("请输入密码：");
+                    try {
+                        atm.bank.transfer(id, passwd2, to, money);
+                        Account a = atm.bank.Login(id, passwd2);
+                        initBusiness(a);
+                    } catch (BalanceNotEnoughException | TransferException | ATMException | LoginException | IOException ex) {
+                        JOptionPane.showMessageDialog(null, ex.toString());
+                    }
+                    break;
+                case "修改额度":
+                    String passwd3 = JOptionPane.showInputDialog("请输入密码：");
+                    try {
+                        Account a = atm.bank.updateCeiling(id, passwd3, money);
+                        initBusiness(a);
+                    } catch (TypeException | LoginException | ATMException | IOException ex) {
+                        JOptionPane.showMessageDialog(null, ex.toString());
+                    }
+                    break;
+            }
+        }else {
+            JOptionPane.showMessageDialog(null,"数额不能为空！");
         }
     }
 

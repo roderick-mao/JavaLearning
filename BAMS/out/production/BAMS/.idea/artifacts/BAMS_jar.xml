@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BAMS:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BAMS_jar</output-path>
+    <root id="archive" name="BAMS.jar">
+      <element id="module-output" name="BAMS" />
+    </root>
+  </artifact>
+</component>

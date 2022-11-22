@@ -12,6 +12,7 @@ import entity.AccountType;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import javax.swing.*;
 
 /**
@@ -48,7 +49,7 @@ public class RegisterPanel extends JPanel {
             CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
             cardLayout.show(this.getParent(),"loginPanel");
             clear();
-        } catch (LoginException | ATMException | RegisterException | NullPointerException ex) {
+        } catch (LoginException | ATMException | RegisterException | NullPointerException | IOException ex) {
             JOptionPane.showMessageDialog(null,ex.toString());
         }
     }
