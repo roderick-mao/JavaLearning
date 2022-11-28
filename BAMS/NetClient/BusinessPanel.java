@@ -2,9 +2,8 @@
  * Created by JFormDesigner on Tue Nov 15 10:07:05 CST 2022
  */
 
-package ATMClient.NetClient;
+package NetClient;
 
-import ATMClient.ATMClient;
 import BankException.*;
 import entity.Account;
 import entity.CreditAccount;
@@ -21,9 +20,9 @@ import java.io.IOException;
  */
 public class BusinessPanel extends JPanel {
 
-    private ATMClient.NetClient.ATMClient atm;
+    private NetClient.ATMClient atm;
 
-    public BusinessPanel(ATMClient.NetClient.ATMClient atm) {
+    public BusinessPanel(NetClient.ATMClient atm) {
         this.atm = atm;
         initComponents();
     }
@@ -72,56 +71,67 @@ public class BusinessPanel extends JPanel {
             Double money = new Double(numField.getText());
             switch (actionType.getItemAt(actionType.getSelectedIndex())) {
                 case "存款":
+                    Account a1 = null;
                     try {
-                        Account a = atm.bank.deposit(id, money);
-                        initBusiness(a);
-                    } catch (LoginException | ATMException | IOException ex) {
-                        JOptionPane.showMessageDialog(null, ex.toString());
+                        if (atm.request(RequestType.DEPOSIT,a1,money,"",0L)){
+                            initBusiness(a1);
+                        }
+                    } catch (ATMException | IOException | ClassNotFoundException ex) {
+                        JOptionPane.showMessageDialog(null,ex.getMessage());
                     }
                     break;
                 case "取款":
                     String passwd1 = JOptionPane.showInputDialog("请输入密码：");
+                    Account a2 = null;
                     try {
-                        Account a = atm.bank.withdraw(id, passwd1, money);
-                        initBusiness(a);
-                    } catch (BalanceNotEnoughException | LoginException | ATMException | IOException ex) {
-                        JOptionPane.showMessageDialog(null, ex.toString());
+                        if (atm.request(RequestType.WITHDRAW,a2,money,passwd1,0L)){
+                            initBusiness(a2);
+                        }
+                    } catch (ATMException | IOException | ClassNotFoundException ex) {
+                        JOptionPane.showMessageDialog(null,ex.getMessage());
                     }
                     break;
                 case "贷款":
+                    Account a3 = null;
                     try {
-                        Account a = atm.bank.requestLoan(id, money);
-                        initBusiness(a);
-                    } catch (LoanException | TypeException | LoginException | ATMException | IOException ex) {
-                        JOptionPane.showMessageDialog(null, ex.toString());
+                        if (atm.request(RequestType.REQUEST_LOAN,a3,money,"",0L)){
+                            initBusiness(a3);
+                        }
+                    } catch (ATMException | IOException | ClassNotFoundException ex) {
+                        JOptionPane.showMessageDialog(null,ex.getMessage());
                     }
                     break;
                 case "还款":
+                    Account a4 = null;
                     try {
-                        Account a = atm.bank.payLoan(id, money);
-                        initBusiness(a);
-                    } catch (LoginException | BalanceNotEnoughException | LoanException | TypeException | ATMException | IOException ex) {
-                        JOptionPane.showMessageDialog(null, ex.toString());
+                        if (atm.request(RequestType.PAY_LOAN,a4,money,"",0L)){
+                            initBusiness(a4);
+                        }
+                    } catch (ATMException | IOException | ClassNotFoundException ex) {
+                        JOptionPane.showMessageDialog(null,ex.getMessage());
                     }
                     break;
                 case "转账":
                     Long to = new Long(JOptionPane.showInputDialog("请输入目标账户："));
                     String passwd2 = JOptionPane.showInputDialog("请输入密码：");
+                    Account a5 = null;
                     try {
-                        atm.bank.transfer(id, passwd2, to, money);
-                        Account a = atm.bank.Login(id, passwd2);
-                        initBusiness(a);
-                    } catch (BalanceNotEnoughException | TransferException | ATMException | LoginException | IOException ex) {
-                        JOptionPane.showMessageDialog(null, ex.toString());
+                        if (atm.request(RequestType.TRANSFER,a5,money,passwd2,to)){
+                            initBusiness(a5);
+                        }
+                    } catch (ATMException | IOException | ClassNotFoundException ex) {
+                        JOptionPane.showMessageDialog(null,ex.getMessage());
                     }
                     break;
                 case "修改额度":
                     String passwd3 = JOptionPane.showInputDialog("请输入密码：");
+                    Account a6 = null;
                     try {
-                        Account a = atm.bank.updateCeiling(id, passwd3, money);
-                        initBusiness(a);
-                    } catch (TypeException | LoginException | ATMException | IOException ex) {
-                        JOptionPane.showMessageDialog(null, ex.toString());
+                        if (atm.request(RequestType.UPDATE_CEILING,a6,money,passwd3,0L)){
+                            initBusiness(a6);
+                        }
+                    } catch (ATMException | IOException | ClassNotFoundException ex) {
+                        JOptionPane.showMessageDialog(null,ex.getMessage());
                     }
                     break;
             }

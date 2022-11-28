@@ -2,9 +2,8 @@
  * Created by JFormDesigner on Tue Nov 15 09:47:56 CST 2022
  */
 
-package ATMClient.NetClient;
+package NetClient;
 
-import ATMClient.ATMClient;
 import BankException.ATMException;
 import BankException.LoginException;
 import BankException.RegisterException;
@@ -22,9 +21,9 @@ import java.io.IOException;
  */
 public class RegisterPanel extends JPanel {
 
-    private ATMClient.NetClient.ATMClient.NetClient.ATMClient atm;
+    private NetClient.ATMClient atm;
 
-    public RegisterPanel(ATMClient.NetClient.ATMClient.NetClient.ATMClient atm) {
+    public RegisterPanel(NetClient.ATMClient atm) {
         this.atm = atm;
         initComponents();
     }
@@ -43,15 +42,18 @@ public class RegisterPanel extends JPanel {
         String email = emailText.getText();
         int type = accountType.getSelectedIndex();
 
+        if (!passwd1.equals(passwd2)){
+            JOptionPane.showMessageDialog(null,"两次输入密码不一致！");
+            return;
+        }
         try {
-            Account a = atm.bank.register(passwd1,passwd2,name,personID,email,AccountType.values()[type]);
-            JOptionPane.showConfirmDialog(this.getParent(),"这是您的卡号为："+ a.getId());
-
-            atm.loginPanel.initLogin(a);
+            Account account = atm.requestRegister(passwd1,name,personID);
+            JOptionPane.showConfirmDialog(this.getParent(),"这是您的卡号为："+ account.getId());
+            atm.loginPanel.initLogin(account);
             CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
             cardLayout.show(this.getParent(),"loginPanel");
             clear();
-        } catch (LoginException | ATMException | RegisterException | NullPointerException | IOException ex) {
+        } catch (ATMException | NullPointerException | IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(null,ex.toString());
         }
     }

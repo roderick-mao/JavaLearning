@@ -1,6 +1,6 @@
 package BankException;
 
-public class LoanException extends Exception{
+public class LoanException extends ATMException{
     public LoanException() {
     }
 

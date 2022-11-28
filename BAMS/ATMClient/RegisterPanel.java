@@ -49,7 +49,7 @@ public class RegisterPanel extends JPanel {
             CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
             cardLayout.show(this.getParent(),"loginPanel");
             clear();
-        } catch (LoginException | ATMException | RegisterException | NullPointerException | IOException ex) {
+        } catch (ATMException | NullPointerException | IOException ex) {
             JOptionPane.showMessageDialog(null,ex.toString());
         }
     }

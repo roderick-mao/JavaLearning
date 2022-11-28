@@ -1,6 +1,6 @@
 package BankException;
 
-public class RegisterException extends Exception{
+public class RegisterException extends ATMException{
     public RegisterException() {
     }
 

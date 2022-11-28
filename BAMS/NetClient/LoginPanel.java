@@ -2,8 +2,9 @@
  * Created by JFormDesigner on Tue Nov 15 10:02:46 CST 2022
  */
 
-package ATMClient.NetClient;
+package NetClient;
 
+import BankException.ATMException;
 import BankException.LoginException;
 import entity.Account;
 
@@ -11,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 /**
  * @author Brainrain
@@ -33,18 +35,20 @@ public class LoginPanel extends JPanel {
                 throw new LoginException("账号不能为空！");
             }
             String passwd = String.valueOf(passwordField.getPassword());
-            Account account = atm.bank.Login(id, passwd);
-            atm.businessPanel.initBusiness(account);
-            JOptionPane.showMessageDialog(null, "登录成功！");
-            CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
-            cardLayout.show(this.getParent(), "businessPanel");
-            loginClear();
+            Account account = null;
+            try {
+                atm.request(RequestType.LOGIN,account,0.0,passwd,0L);
+                atm.businessPanel.initBusiness(account);
+                JOptionPane.showMessageDialog(null, "登录成功！");
+                CardLayout cardLayout = (CardLayout) this.getParent().getLayout();
+                cardLayout.show(this.getParent(), "businessPanel");
+                loginClear();
+            } catch (ATMException | IOException | ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(null,ex.toString());
+            }
         } catch (LoginException ex) {
             JOptionPane.showMessageDialog(null,ex.toString());
         }
-
-
-
     }
 
     public void loginClear(){

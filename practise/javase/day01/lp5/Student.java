@@ -2,7 +2,7 @@ package javase.day01.lp5;
 
 import java.util.Map;
 
-public class Student {
+class Student {
     public static final boolean Male = true;
     public static final boolean FeMale = false;
 

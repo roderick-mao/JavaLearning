@@ -51,8 +51,18 @@ public class SelServer {
                     if (key.isReadable()){
                         SelectableChannel channel = key.channel();
                         ByteBuffer byteBuffer = (ByteBuffer) key.attachment();
-                        int len = ((SocketChannel)channel).read(byteBuffer);
-                        System.out.println(new String(byteBuffer.array(),0,len));
+                        try {
+                            int len = ((SocketChannel)channel).read(byteBuffer);
+                            if(len >=0){
+                                System.out.println(((SocketChannel) channel).getRemoteAddress()+"说：" + new String(byteBuffer.array(),0,len));
+                            }
+                        }catch (IOException e){
+                            System.out.println(((SocketChannel) channel).getRemoteAddress()+"已下线");
+                            //为啥没有这个会无限循环下去
+                            channel.close();
+                        }
+
+                        byteBuffer.clear();
                     }
                     iterator.remove();
                 }

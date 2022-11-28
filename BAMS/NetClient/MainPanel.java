@@ -2,9 +2,7 @@
  * Created by JFormDesigner on Tue Nov 15 09:38:14 CST 2022
  */
 
-package ATMClient.NetClient;
-
-import ATMClient.ATMClient;
+package NetClient;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +13,8 @@ import java.awt.event.MouseEvent;
  * @author Brainrain
  */
 public class MainPanel extends JPanel {
-    private ATMClient.NetClient.ATMClient.NetClient.ATMClient atm;
-    public MainPanel(ATMClient.NetClient.ATMClient.NetClient.ATMClient atm) {
+    private NetClient.ATMClient atm;
+    public MainPanel(NetClient.ATMClient atm) {
         this.atm = atm;
         initComponents();
     }

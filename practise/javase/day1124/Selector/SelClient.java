@@ -12,6 +12,7 @@ public class SelClient {
     public static void main(String[] args) {
         InetSocketAddress address = new InetSocketAddress("192.168.21.12",8899);
         SocketChannel sc = null;
+        Scanner scanner = new Scanner(System.in);
         try {
             boolean isConnected = false;
             do {
@@ -30,7 +31,7 @@ public class SelClient {
                     }
             }while (!isConnected);
             System.out.println("连接成功！");
-            Scanner scanner = new Scanner(System.in);
+
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
             System.out.println("请输入：");
             while (scanner.hasNext()){
@@ -45,6 +46,7 @@ public class SelClient {
             e.printStackTrace();
         }finally {
             try {
+                scanner.close();
                 sc.close();
             } catch (IOException e) {
                 e.printStackTrace();

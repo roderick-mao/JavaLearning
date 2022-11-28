@@ -1,6 +1,6 @@
 package BankException;
 
-public class TransferException extends Exception{
+public class TransferException extends ATMException{
     public TransferException() {
     }
 

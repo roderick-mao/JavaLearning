@@ -75,7 +75,7 @@ public class BusinessPanel extends JPanel {
                     try {
                         Account a = atm.bank.deposit(id, money);
                         initBusiness(a);
-                    } catch (LoginException | ATMException | IOException ex) {
+                    } catch ( ATMException | IOException ex) {
                         JOptionPane.showMessageDialog(null, ex.toString());
                     }
                     break;
@@ -84,7 +84,7 @@ public class BusinessPanel extends JPanel {
                     try {
                         Account a = atm.bank.withdraw(id, passwd1, money);
                         initBusiness(a);
-                    } catch (BalanceNotEnoughException | LoginException | ATMException | IOException ex) {
+                    } catch (ATMException | IOException ex) {
                         JOptionPane.showMessageDialog(null, ex.toString());
                     }
                     break;
@@ -92,7 +92,7 @@ public class BusinessPanel extends JPanel {
                     try {
                         Account a = atm.bank.requestLoan(id, money);
                         initBusiness(a);
-                    } catch (LoanException | TypeException | LoginException | ATMException | IOException ex) {
+                    } catch ( ATMException | IOException ex) {
                         JOptionPane.showMessageDialog(null, ex.toString());
                     }
                     break;
@@ -100,7 +100,7 @@ public class BusinessPanel extends JPanel {
                     try {
                         Account a = atm.bank.payLoan(id, money);
                         initBusiness(a);
-                    } catch (LoginException | BalanceNotEnoughException | LoanException | TypeException | ATMException | IOException ex) {
+                    } catch (ATMException | IOException ex) {
                         JOptionPane.showMessageDialog(null, ex.toString());
                     }
                     break;
@@ -111,7 +111,7 @@ public class BusinessPanel extends JPanel {
                         atm.bank.transfer(id, passwd2, to, money);
                         Account a = atm.bank.Login(id, passwd2);
                         initBusiness(a);
-                    } catch (BalanceNotEnoughException | TransferException | ATMException | LoginException | IOException ex) {
+                    } catch (ATMException |  IOException ex) {
                         JOptionPane.showMessageDialog(null, ex.toString());
                     }
                     break;
@@ -120,7 +120,7 @@ public class BusinessPanel extends JPanel {
                     try {
                         Account a = atm.bank.updateCeiling(id, passwd3, money);
                         initBusiness(a);
-                    } catch (TypeException | LoginException | ATMException | IOException ex) {
+                    } catch (ATMException | IOException ex) {
                         JOptionPane.showMessageDialog(null, ex.toString());
                     }
                     break;

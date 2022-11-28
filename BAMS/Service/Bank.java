@@ -31,7 +31,7 @@ public class Bank {
 
     public Account register(String password, String repassword,
                             String name, String personID, String email, AccountType type)
-            throws LoginException, ATMException, RegisterException, IOException {
+            throws ATMException, IOException {
         if (password != null && repassword!=null && name!=null && personID!=null && type!=null
         && !password.equals("") && !repassword.equals("") && !name.equals("") && !personID.equals("") && !type.equals("")) {
 

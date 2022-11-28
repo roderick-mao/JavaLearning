@@ -1,6 +1,6 @@
 package BankException;
 
-public class BalanceNotEnoughException extends Exception{
+public class BalanceNotEnoughException extends ATMException{
     public BalanceNotEnoughException() {
     }
 
