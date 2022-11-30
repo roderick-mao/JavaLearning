@@ -6,10 +6,7 @@ import com.sun.security.ntlm.Server;
 import entity.Account;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -72,21 +69,23 @@ public class BankServer implements Runnable{
         public void run() {
             while (true) {
                 try (Socket s = ss.accept();
+                     BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+                     ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
                 ) {
-                    try (
-                            BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-                            ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-                    ) {
+                    try {
                         String request = br.readLine();
                         String[] strings = request.split("#");
                         switch (strings[0]){
                             case "DEPOSIT":
-                                Account account = bank.deposit(new Long(strings[1]),new Double(strings[2]));
+                                Account account1 = bank.deposit(new Long(strings[1]),new Double(strings[2]));
+                                oos.writeObject(account1);
                                 break;
-                            case "":
+                            case "WITHDRAW":
+                                Account account2 = bank.withdraw(new Long(strings[1]),strings[3],new Double(strings[2]));
+                                break;
                         }
                     } catch (IOException | ATMException e) {
-                        JOptionPane.showMessageDialog(null,e.getMessage());
+                        oos.writeObject(e);
                     }
                 } catch (IOException e) {
                     //未正常获得连接

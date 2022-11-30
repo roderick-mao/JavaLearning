@@ -1,0 +1,137 @@
+JFDML JFormDesigner: "8.0.0.0.194" Java: "17.0.4.1" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label1"
+				"text": "账户："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 90
+				"y": 30
+				"width": 50
+				"height": 25
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label2"
+				"text": "姓名："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 50
+				"height": 25
+				"x": 90
+				"y": 60
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label3"
+				"text": "余额："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 50
+				"height": 25
+				"x": 90
+				"y": 90
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label4"
+				"text": "信用额度："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 65
+				"height": 25
+				"x": 90
+				"y": 120
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label5"
+				"text": "贷款额："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 65
+				"height": 25
+				"x": 90
+				"y": 150
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "actionType"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "存款"
+					addElement( "存款" )
+					addElement( "取款" )
+				}
+				"selectedIndex": 1
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 90
+				"y": 200
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "numField"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 175
+				"y": 200
+				"width": 85
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "accountLabel"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 190
+				"y": 30
+				"width": 135
+				"height": 25
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "nameLabel"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 75
+				"height": 25
+				"x": 190
+				"y": 60
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "restLabel"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 75
+				"height": 25
+				"x": 190
+				"y": 90
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "creditLabel"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 75
+				"height": 25
+				"x": 190
+				"y": 120
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "loanLabel"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 75
+				"height": 25
+				"x": 190
+				"y": 150
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "commitBtn"
+				"text": "提交"
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "commitBtnMouseClicked", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 78
+				"height": 30
+				"x": 55
+				"y": 240
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "backBtn"
+				"text": "返回"
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "backBtnMouseClicked", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 78
+				"height": 30
+				"x": 200
+				"y": 240
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}

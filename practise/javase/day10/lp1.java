@@ -6,7 +6,7 @@ public class lp1 {
     public static void main(String[] args) {
         String str = "9 10 12 6 8 15";
         ArrayList<String> nums = new ArrayList<>();
-        nums.addAll(List.of(str.split("\\s+")));
+        nums.addAll(Arrays.asList(str.split("\\s+")));
         nums.sort(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {

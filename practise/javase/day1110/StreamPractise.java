@@ -1,6 +1,7 @@
 package javase.day1110;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -9,8 +10,8 @@ import java.util.stream.Stream;
 class StreamPractise {
     static String[] t1 = {"aaa","bb","ccc","dd"};
     static String[] t2 = {"eee","张fff","gg","张h"};
-    static List<String> team1 = new ArrayList<>(List.of(t1));
-    static List<String> team2 = new ArrayList<>(List.of(t2));
+    static List<String> team1 = new ArrayList<>(Arrays.asList(t1));
+    static List<String> team2 = new ArrayList<>(Arrays.asList(t2));
 
     public static void main(String[] args) {
 

@@ -1,9 +1,6 @@
 package javase.day11;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 class lp2 {
     public static void treeSetDemo(){
@@ -15,7 +12,7 @@ class lp2 {
                 return Integer.valueOf(o1).compareTo(Integer.valueOf(o2));
             }
         });
-        treeSet.addAll(List.of(spl));
+        treeSet.addAll(Arrays.asList(spl));
         System.out.println(treeSet);
 
     }
