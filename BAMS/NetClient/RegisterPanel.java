@@ -47,7 +47,7 @@ public class RegisterPanel extends JPanel {
             return;
         }
         try {
-            Account account = atm.requestRegister(passwd1,name,personID);
+            Account account = atm.requestRegister(passwd1,name,personID,email,AccountType.values()[type]);
             JOptionPane.showConfirmDialog(this.getParent(),"这是您的卡号为："+ account.getId());
             atm.loginPanel.initLogin(account);
             CardLayout cardLayout = (CardLayout) this.getParent().getLayout();

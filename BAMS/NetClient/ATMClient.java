@@ -3,6 +3,7 @@ package NetClient;
 import BankException.ATMException;
 import Service.Bank;
 import entity.Account;
+import entity.AccountType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -93,13 +94,13 @@ public class ATMClient extends JFrame {
         return true;
     }
 
-    public Account requestRegister(String passwd,String name,String personID) throws ClassNotFoundException, IOException, ATMException {
+    public Account requestRegister(String passwd, String name, String personID, String email, AccountType type) throws ClassNotFoundException, IOException, ATMException {
         Object o;
         try (
                 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
         ) {
-            bw.write("#REGISTER#"+ name + "#" + passwd +"#"+personID);
+            bw.write("#REGISTER#"+ name + "#" + passwd +"#"+personID+"#"+name+"#"+type.name());
             o = ois.readObject();
         }catch (ClassNotFoundException e) {
             throw new ClassNotFoundException("实例返回异常！");

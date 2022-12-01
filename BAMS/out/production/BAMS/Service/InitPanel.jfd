@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.0.0.0.194" Java: "17.0.4.1" encoding: "UTF-8"
+JFDML JFormDesigner: "8.0.0.0.194" Java: "11.0.14.1" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -14,6 +14,23 @@ new FormModel {
 				"y": 45
 				"width": 130
 				"height": 45
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "startBtn"
+				"text": "启动"
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "button1MouseClicked", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 70
+				"y": 205
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "stopBtn"
+				"text": "停止"
+				"enabled": false
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "stopBtnMouseClicked", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 260
+				"y": 205
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
