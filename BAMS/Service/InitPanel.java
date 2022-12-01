@@ -27,30 +27,31 @@ public class InitPanel extends JPanel {
     ThreadPool pool = null;
 
 
-    private void button1MouseClicked(MouseEvent e) {
-        // TODO add your code here
-        pool = new ThreadPool(5,5);
-        bankServer = BankServer.getInstance(32188);
-        startBtn.setEnabled(false);
-        stopBtn.setEnabled(true );
-        isStart = true;
-        JOptionPane.showMessageDialog(null,"服务器已经启动！");
-        while (isStart){
-            pool.execute(bankServer.listenAndReply);
-        }
-    }
+
 
     private void stopBtnMouseClicked(MouseEvent e) {
         // TODO add your code here
-        if (isStart == true && pool != null && bankServer != null){
+        if (isStart == true && pool != null && bankServer.taskServer != null){
             pool.stopAll();
-            bankServer = null;
+            bankServer.taskServer = null;
             JOptionPane.showMessageDialog(null,"服务器已经停止工作！");
         }else {
             JOptionPane.showMessageDialog(null,"服务器未启动");
         }
         startBtn.setEnabled(true);
         stopBtn.setEnabled(false);
+    }
+
+    private void startBtnMouseClicked(MouseEvent e) {
+        pool = new ThreadPool(5,5);
+        bankServer.taskServer = TaskServer.getInstance(32188);
+        startBtn.setEnabled(false);
+        stopBtn.setEnabled(true );
+        isStart = true;
+        JOptionPane.showMessageDialog(null,"服务器已经启动！");
+        while (isStart){
+            pool.execute(bankServer.taskServer.listenAndReply);
+        }
     }
 
     private void initComponents() {
@@ -73,7 +74,7 @@ public class InitPanel extends JPanel {
         startBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                button1MouseClicked(e);
+                startBtnMouseClicked(e);
             }
         });
         add(startBtn);
