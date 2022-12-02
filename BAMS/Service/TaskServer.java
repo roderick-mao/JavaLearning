@@ -78,6 +78,7 @@ public class TaskServer {
                         s = ss.accept();
                         br = new BufferedReader(new InputStreamReader(s.getInputStream()));
                         oos = new ObjectOutputStream(s.getOutputStream());
+                        System.out.println(s.getRemoteSocketAddress()+"已连接");
                     }
                     do {
                         try {
@@ -87,48 +88,58 @@ public class TaskServer {
                                 case "DEPOSIT":
                                     Account account1 = bank.deposit(new Long(strings[1]), new Double(strings[2]));
                                     oos.writeObject(account1);
+                                    oos.flush();
                                     break;
                                 case "WITHDRAW":
                                     Account account2 = bank.withdraw(new Long(strings[1]), strings[3], new Double(strings[2]));
                                     oos.writeObject(account2);
+                                    oos.flush();
                                     break;
                                 case "LOGIN":
                                     Account account3 = bank.Login(new Long(strings[1]), strings[3]);
                                     oos.writeObject(account3);
+                                    oos.flush();
                                     break;
                                 case "TRANSFER":
                                     bank.transfer(new Long(strings[1]), strings[3], new Long(strings[4]), new Double(strings[2]));
                                     Account account4 = bank.Login(new Long(strings[1]), strings[3]);
                                     oos.writeObject(account4);
+                                    oos.flush();
                                     break;
                                 case "UPDATE_CEILING":
                                     Account account5 = bank.updateCeiling(new Long(strings[1]), strings[3], new Double(strings[2]));
                                     oos.writeObject(account5);
+                                    oos.flush();
                                     break;
                                 case "REQUEST_LOAN":
                                     Account account6 = bank.requestLoan(new Long(strings[1]), new Double(strings[2]));
                                     oos.writeObject(account6);
+                                    oos.flush();
                                     break;
                                 case "PAY_LOAN":
                                     Account account7 = bank.payLoan(new Long(strings[1]), new Double(strings[2]));
                                     oos.writeObject(account7);
+                                    oos.flush();
                                     break;
                                 case "REGISTER":
                                     Account newAccount = bank.register(strings[2],strings[2],strings[1],
                                             strings[3],strings[4], AccountType.valueOf(strings[5]));
                                     oos.writeObject(newAccount);
+                                    oos.flush();
                                     break;
                                 default:
                                     oos.writeObject(new ATMException("请求类型错误！"));
-                                    break;
+                                    oos.flush();
                             }
                         } catch (IOException | ATMException e) {
                             oos.writeObject(e);
+                            oos.flush();
                         }
-                    } while (s.isConnected());
+                    } while (!s.isClosed());
                     System.out.println(s.getRemoteSocketAddress() + "连接断开！");
                 } catch (IOException e) {
                     System.out.println("连接异常！");
+                }finally{
                     try {
                         s.close();
                         br.close();

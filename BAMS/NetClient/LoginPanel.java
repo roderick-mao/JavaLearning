@@ -34,10 +34,10 @@ public class LoginPanel extends JPanel {
             } else {
                 throw new LoginException("账号不能为空！");
             }
-            String passwd = String.valueOf(passwordField.getPassword());
+            String passwd = new String(passwordField.getPassword());
             Account account = null;
             try {
-                atm.request(RequestType.LOGIN,account,0.0,passwd,0L);
+                account = atm.request(RequestType.LOGIN,id,0.0,passwd,0L);
                 atm.businessPanel.initBusiness(account);
                 JOptionPane.showMessageDialog(null, "登录成功！");
                 CardLayout cardLayout = (CardLayout) this.getParent().getLayout();

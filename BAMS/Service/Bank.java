@@ -76,7 +76,8 @@ public class Bank {
     }
 
     public Account deposit (Long id, double money) throws LoginException, ATMException, IOException {
-        Account a = ad.selectOne(id).deposit(money);
+        Account a = ad.selectOne(id);
+        a.deposit(money);
         ad.update(a);
         return a;
     }

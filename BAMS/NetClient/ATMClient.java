@@ -23,6 +23,8 @@ public class ATMClient extends JFrame {
      RegisterPanel registerPanel;
 
      Socket socket;
+     BufferedWriter bw;
+     ObjectInputStream ois;
 
     public ATMClient(){
         //初始化窗体
@@ -37,19 +39,17 @@ public class ATMClient extends JFrame {
             try {
                 s = new Socket(InetAddress.getLocalHost(), 32188);
                 socket = s;
+                bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                ois = new ObjectInputStream(socket.getInputStream());
             } catch (UnknownHostException e) {
                 System.out.println("未获取到本地IP");
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "无法连接服务器");
-                try {
-                    s.close();
-                } catch (IOException ex) {
-                    System.out.println("套接字关闭异常！");
-                }
+                socket = null;
             }
-        }while (!socket.isConnected());
+        }while (socket == null);
 
-        System.out.println("服务器已连接");
+        System.out.println(socket.getRemoteSocketAddress()+"服务器已连接");
 
         //实例化panel界面
 
@@ -69,15 +69,15 @@ public class ATMClient extends JFrame {
         container.add(registerPanel,"registerPanel");
     }
 
-    public boolean request(RequestType type,Account account,Double money,String passwd,Long to)
+    public Account request(RequestType type,Long id,Double money,String passwd,Long to)
             throws ATMException, IOException, ClassNotFoundException {
 
         Object o;
-        try (
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-                ) {
-            bw.write("#" + type.name() + "#" + account.getId() + "#" + money + "#" + passwd +"#"+to.toString());
+        try /*( BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+              ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());)*/{
+            bw.write(type.name() + "#" + id.toString() + "#" + money + "#" + passwd +"#"+to.toString());
+            bw.newLine();
+            bw.flush();
             o = ois.readObject();
         }catch (ClassNotFoundException e) {
             throw new ClassNotFoundException("实例返回异常！");
@@ -89,18 +89,18 @@ public class ATMClient extends JFrame {
             throw (ATMException) o;
 
         }else if (o instanceof Account){
-            account = (Account) o;
+            return (Account) o;
         }
-        return true;
+        return (Account) o;
     }
 
     public Account requestRegister(String passwd, String name, String personID, String email, AccountType type) throws ClassNotFoundException, IOException, ATMException {
         Object o;
-        try (
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-        ) {
-            bw.write("#REGISTER#"+ name + "#" + passwd +"#"+personID+"#"+name+"#"+type.name());
+        try /*( BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+              ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());)*/{
+            bw.write("REGISTER#"+ name + "#" + passwd +"#"+personID+"#"+name+"#"+type.name());
+            bw.newLine();
+            bw.flush();
             o = ois.readObject();
         }catch (ClassNotFoundException e) {
             throw new ClassNotFoundException("实例返回异常！");
