@@ -53,6 +53,7 @@ public class FileSetDao extends AbstractDao implements IDAO<Account>,Serializabl
     public boolean updateAll() throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Accounts"));
         oos.writeObject(this);
+        oos.flush();
         oos.close();
         return true;
     }

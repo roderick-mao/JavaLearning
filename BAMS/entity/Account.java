@@ -4,7 +4,7 @@ import BankException.BalanceNotEnoughException;
 
 import java.io.Serializable;
 
-public abstract class Account implements Serializable {
+public abstract class Account implements Serializable,Cloneable {
 
     private final Long id;
     private String password;
@@ -78,5 +78,14 @@ public abstract class Account implements Serializable {
 
     void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

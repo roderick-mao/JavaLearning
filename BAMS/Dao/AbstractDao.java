@@ -67,6 +67,7 @@ public abstract class AbstractDao {
         BufferedWriter bw = new BufferedWriter(new FileWriter(f,true));
         bw.write(registerIndex);
         bw.newLine();
+        bw.flush();
         bw.close();
         return new Long(registerIndex);
     }

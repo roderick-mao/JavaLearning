@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MzrClient">
+    <output-path>$PROJECT_DIR$/out/artifacts/MzrClient</output-path>
+    <root id="archive" name="MzrClient.jar">
+      <element id="module-output" name="BAMS" />
+    </root>
+  </artifact>
+</component>
